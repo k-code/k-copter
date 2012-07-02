@@ -1,55 +1,36 @@
 package ru.kcode;
 
-import javax.swing.JFrame;
+import java.io.IOException;
+
 import javax.swing.SwingUtilities;
 
-import ru.kcode.view.JoysticPanel;
+import ru.kcode.view.MainWindow;
+import ru.kcode.view.ViewJoysticListener;
+import ru.kcode.view.ViewRotorJoysticListener;
 
 import com.centralnexus.input.Joystick;
-import com.centralnexus.input.JoystickListener;
 
-public class Controller implements Runnable {
-
-    private static JoysticPanel joysticPanel;
+public class Controller {
 
     public static void main(String[] args) throws Exception {
-        SwingUtilities.invokeLater(new Controller());
+        Joystick joystick;
+        MainWindow mainWindow;
 
-        Joystick.createInstance().addJoystickListener(new JoystickListener() {
+        mainWindow = new MainWindow();
+        SwingUtilities.invokeAndWait(mainWindow);
 
-            public void joystickButtonChanged(Joystick j) {
-
+        try {
+            joystick = Joystick.createInstance();
+            if (joystick != null) {
+                joystick.addJoystickListener(new ViewJoysticListener(mainWindow
+                        .getJoysticPanel()));
+                joystick.addJoystickListener(new ViewRotorJoysticListener(mainWindow
+                        .getRotorView()));
             }
-
-            public void joystickAxisChanged(Joystick j) {
-                if (joysticPanel == null)
-                    return;
-                joysticPanel.getAxisValueX().setText(
-                        Float.valueOf(j.getX()).toString());
-                joysticPanel.getAxisValueY().setText(
-                        Float.valueOf(j.getR()).toString());
-                joysticPanel.getAxisValueZ().setText(
-                        Float.valueOf(j.getY()).toString());
-                joysticPanel.getAxisValueR().setText(
-                        Float.valueOf(j.getZ()).toString());
-                joysticPanel.getAxisValueU().setText(
-                        Float.valueOf(j.getU()).toString());
-                joysticPanel.getAxisValueV().setText(
-                        Float.valueOf(j.getV()).toString());
-            }
-        });
+        } catch (IOException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
     }
 
-    public void run() {
-        JFrame f = new JFrame("Quadro Debug");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        f.pack();
-
-        joysticPanel = new JoysticPanel();
-        f.add(joysticPanel);
-
-        f.setVisible(true);
-        f.setSize(320, 320);
-    }
 }
