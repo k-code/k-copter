@@ -84,6 +84,9 @@ public class MotorComputing {
     }
     
     private int validateMotor(int i) {
+        if ( getMotorsSpeed() < LOWER_MOTOR_LIMIT) {
+            return getMotorsSpeed();
+        }
         if (i > 1000) {
             return 1000;
         }
