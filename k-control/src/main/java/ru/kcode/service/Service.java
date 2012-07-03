@@ -48,15 +48,4 @@ public class Service {
          */
         return buf;
     }
-
-    public static CharBuffer getHidData() throws Exception {
-        CharBuffer buf = CharBuffer.allocate(78);
-        File hidDev = new File("/dev/rumblepad2");
-
-        InputStream input = new FileInputStream(hidDev);
-        InputStreamReader reader = new InputStreamReader(input);
-        out.printf("%d\n", reader.read(buf));
-        buf.position(0);
-        return buf;
-    }
 }

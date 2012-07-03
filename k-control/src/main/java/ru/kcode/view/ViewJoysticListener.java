@@ -1,5 +1,7 @@
 package ru.kcode.view;
 
+import ru.kcode.service.KJoystick;
+
 import com.centralnexus.input.Joystick;
 import com.centralnexus.input.JoystickListener;
 
@@ -12,14 +14,15 @@ public class ViewJoysticListener implements JoystickListener {
     }
 
     public void joystickAxisChanged(Joystick j) {
+        KJoystick kj = new KJoystick(j);
         if (joysticPanel == null)
             return;
-        joysticPanel.getAxisValueX().setText(ftos(j.getX()));
-        joysticPanel.getAxisValueY().setText(ftos(j.getR()));
-        joysticPanel.getAxisValueZ().setText(ftos(j.getY()));
-        joysticPanel.getAxisValueR().setText(ftos(j.getZ()));
-        joysticPanel.getAxisValueU().setText(ftos(j.getU()));
-        joysticPanel.getAxisValueV().setText(ftos(j.getV()));
+        joysticPanel.getAxisValueX().setText(ftos(kj.getX()));
+        joysticPanel.getAxisValueY().setText(ftos(kj.getY()));
+        joysticPanel.getAxisValueZ().setText(ftos(kj.getZ()));
+        joysticPanel.getAxisValueR().setText(ftos(kj.getR()));
+        joysticPanel.getAxisValueU().setText(ftos(kj.getU()));
+        joysticPanel.getAxisValueV().setText(ftos(kj.getV()));
     }
 
     public void joystickButtonChanged(Joystick j) {

@@ -51,12 +51,12 @@ public class JoysticPanel extends JPanel {
 	}
 
 	private void initAxisLabels() {
-		axisLabelX = new JLabel("X:");
-		axisLabelX.setBounds(10, 10, 15, 10);
-		this.add(axisLabelX);
 		axisLabelY = new JLabel("Y:");
-		axisLabelY.setBounds(10, 25, 15, 10);
+		axisLabelY.setBounds(10, 10, 15, 10);
 		this.add(axisLabelY);
+		axisLabelX = new JLabel("X:");
+		axisLabelX.setBounds(10, 25, 15, 10);
+		this.add(axisLabelX);
 		axisLabelZ = new JLabel("Z:");
 		axisLabelZ.setBounds(110, 10, 15, 10);
 		this.add(axisLabelZ);
@@ -72,14 +72,14 @@ public class JoysticPanel extends JPanel {
 	}
 	
 	private void initAxisValues() {
+        axisValueY = new JLabel("y");
+        axisValueY.setBounds(25, 10, 50, 10);
+        this.add(axisValueY);
 		axisValueX = new JLabel("x");
-		axisValueX.setBounds(25, 10, 50, 10);
+		axisValueX.setBounds(25, 25, 50, 10);
 		this.add(axisValueX);
-		axisValueY = new JLabel("y");
-		axisValueY.setBounds(135, 10, 50, 10);
-		this.add(axisValueY);
 		axisValueZ = new JLabel("z");
-		axisValueZ.setBounds(25, 25, 50, 10);
+		axisValueZ.setBounds(135, 10, 50, 10);
 		this.add(axisValueZ);
 		axisValueR = new JLabel("r");
 		axisValueR.setBounds(135, 25, 50, 10);
