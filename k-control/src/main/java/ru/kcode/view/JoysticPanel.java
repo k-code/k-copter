@@ -1,10 +1,14 @@
 package ru.kcode.view;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class JoysticPanel extends JPanel {
 	private static final long serialVersionUID = -3113982496558550127L;
+	private GridBagLayout layout;
 
 	private JLabel axisLabelX;
 	private JLabel axisLabelY;
@@ -21,7 +25,8 @@ public class JoysticPanel extends JPanel {
 	private JLabel axisValueV;
 	
 	public JoysticPanel() {
-		this.setLayout(null);
+	    layout = new GridBagLayout();
+		setLayout(layout);
 		initAxisLabels();
 		initAxisValues();
 	}
@@ -51,44 +56,60 @@ public class JoysticPanel extends JPanel {
 	}
 
 	private void initAxisLabels() {
-		axisLabelY = new JLabel("Y:");
-		axisLabelY.setBounds(10, 10, 15, 10);
-		this.add(axisLabelY);
+        GridBagConstraints c = new GridBagConstraints();
+        c.ipadx = 4;
+		c.gridx = 0;
+		c.gridy = 0;
+        axisLabelY = new JLabel("Y:");
+		this.add(axisLabelY, c);
+        c.gridx = 2;
+        c.gridy = 0;
 		axisLabelX = new JLabel("X:");
-		axisLabelX.setBounds(10, 25, 15, 10);
-		this.add(axisLabelX);
+		this.add(axisLabelX, c);
+        c.gridx = 4;
+        c.gridy = 0;
 		axisLabelZ = new JLabel("Z:");
-		axisLabelZ.setBounds(110, 10, 15, 10);
-		this.add(axisLabelZ);
+		this.add(axisLabelZ, c);
+        c.gridx = 0;
+        c.gridy = 1;
 		axisLabelR = new JLabel("R:");
-		axisLabelR.setBounds(110, 25, 15, 10);
-		this.add(axisLabelR);
+		this.add(axisLabelR, c);
+        c.gridx = 2;
+        c.gridy = 1;
 		axisLabelU = new JLabel("U:");
-		axisLabelU.setBounds(10, 60, 15, 10);
-		this.add(axisLabelU);
+		this.add(axisLabelU, c);
+        c.gridx = 4;
+        c.gridy = 1;
 		axisLabelV = new JLabel("V:");
-		axisLabelV.setBounds(110, 60, 15, 10);
-		this.add(axisLabelV);
+		this.add(axisLabelV, c);
 	}
 	
 	private void initAxisValues() {
-        axisValueY = new JLabel("y");
-        axisValueY.setBounds(25, 10, 50, 10);
-        this.add(axisValueY);
-		axisValueX = new JLabel("x");
-		axisValueX.setBounds(25, 25, 50, 10);
-		this.add(axisValueX);
-		axisValueZ = new JLabel("z");
-		axisValueZ.setBounds(135, 10, 50, 10);
-		this.add(axisValueZ);
-		axisValueR = new JLabel("r");
-		axisValueR.setBounds(135, 25, 50, 10);
-		this.add(axisValueR);
-		axisValueU = new JLabel("u");
-		axisValueU.setBounds(25, 60, 50, 10);
-		this.add(axisValueU);
-		axisValueV = new JLabel("v");
-		axisValueV.setBounds(135, 60, 50, 10);
-		this.add(axisValueV);
+        GridBagConstraints c = new GridBagConstraints();
+        c.ipadx = 4;
+        c.gridx = 1;
+        c.gridy = 0;
+        axisValueU = new JLabel("0");
+        this.add(axisValueU, c);
+        c.gridx = 3;
+        c.gridy = 0;
+        axisValueV = new JLabel("0");
+        this.add(axisValueV, c);
+        c.gridx = 5;
+        c.gridy = 0;
+        axisValueY = new JLabel("0");
+        this.add(axisValueY, c);
+        c.gridx = 1;
+        c.gridy = 1;
+		axisValueX = new JLabel("0");
+		this.add(axisValueX, c);
+        c.gridx = 3;
+        c.gridy = 1;
+		axisValueZ = new JLabel("0");
+		this.add(axisValueZ, c);
+        c.gridx = 5;
+        c.gridy = 1;
+		axisValueR = new JLabel("0");
+		this.add(axisValueR, c);
 	}
 }
