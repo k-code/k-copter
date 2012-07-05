@@ -126,8 +126,8 @@ void updateCapabilities(int joystick)
 }
 
 int calcNumDevices() {
-    if (numDevices>=0)
-        return numDevices;
+    //if (numDevices>=0)
+    //    return numDevices;
     initAll();
     unsigned int i=0;
     for (; i<MAXJOYSTICKS; i++) {

@@ -30,7 +30,7 @@ public class DevicesPanel extends JPanel {
         joysticksBox.setMaximumSize(null);
         add(joysticksBox);
         
-        updateDevicesButton = new JButton("Aplly");
+        updateDevicesButton = new JButton("Update");
         updateDevicesButton.setBounds(330, 10, 120, 20);
         updateDevicesButton.addActionListener(listener);
         add(updateDevicesButton);
@@ -62,6 +62,7 @@ public class DevicesPanel extends JPanel {
         if (joysticksBox.getSelectedItem() instanceof Joystick) {
             JoystickService.setJoystick((Joystick)joysticksBox.getSelectedItem());
         }
+        // TODO : else set null and remove listeners
     }
     
     private class DevicesPanelListener implements ActionListener {
@@ -77,10 +78,7 @@ public class DevicesPanel extends JPanel {
         }
         
         private void updateDevicesButtonHandler(JButton b) {
-            //createJoysticksList();
-            if (joysticksBox.getSelectedItem() instanceof Joystick) {
-                JoystickService.setJoystick((Joystick)joysticksBox.getSelectedItem());
-            }
+            createJoysticksList();
         }
         
         private void updateDriverHandler() {
