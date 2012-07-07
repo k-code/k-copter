@@ -46,6 +46,27 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/Joystick.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>org.jogamp</groupId>
+			<artifactId>jogl</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/jogl.all.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp</groupId>
+			<artifactId>gluegen</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/gluegen.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp</groupId>
+			<artifactId>gluegen-rt</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/gluegen-rt.jar</systemPath>
+		</dependency>
 
 		<!-- Logs -->
 		<dependency>
