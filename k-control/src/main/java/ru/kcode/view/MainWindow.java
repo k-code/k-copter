@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import ru.kcode.service.JoystickService;
+import ru.kcode.view.copter.Copetr3dPanel;
+import ru.kcode.view.copter.RotorView;
 
 import com.centralnexus.input.Joystick;
 
@@ -14,6 +16,7 @@ public class MainWindow extends JFrame implements Runnable {
     private static DevicesPanel devicesPanel;
     private static JoysticPanel joysticPanel;
     private static RotorView rotorView;
+    private static Copetr3dPanel copetr3dPanel;
 
     @Override
     public void run() {
@@ -35,9 +38,13 @@ public class MainWindow extends JFrame implements Runnable {
         rotorView = new RotorView();
         rotorView.setBounds(220, 80, 200, 200);
         mainPanel.add(rotorView);
+
+        copetr3dPanel = new Copetr3dPanel();
+        copetr3dPanel.setBounds(2, 280, 400, 400);
+        mainPanel.add(copetr3dPanel);
         
         getContentPane().add(mainPanel);
-        setPreferredSize(new Dimension(500, 400));
+        setPreferredSize(new Dimension(500, 900));
         
         Joystick j = JoystickService.getJoystick();
         if (j != null) {

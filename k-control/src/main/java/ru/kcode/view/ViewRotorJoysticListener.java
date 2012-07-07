@@ -2,6 +2,7 @@ package ru.kcode.view;
 
 import ru.kcode.service.KJoystick;
 import ru.kcode.service.MotorComputing;
+import ru.kcode.view.copter.RotorView;
 
 import com.centralnexus.input.Joystick;
 import com.centralnexus.input.JoystickListener;
