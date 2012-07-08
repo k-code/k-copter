@@ -11,16 +11,18 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 public class Copetr3dPanel extends JPanel {
     private static final long serialVersionUID = 2219431191224761363L;
+    private static final int FPS = 80;
     
     private FPSAnimator animator;
     private GLCanvas canvas;
+    private Copter3dView copter3d;
     
     public Copetr3dPanel() {
         
         initComponents();
 
-        animator = new FPSAnimator(40);
-        Copter3dView copter3d = new Copter3dView();
+        animator = new FPSAnimator(FPS);
+        copter3d = new Copter3dView();
 
         canvas.addGLEventListener(copter3d);
         
@@ -49,5 +51,9 @@ public class Copetr3dPanel extends JPanel {
         capabilities.setSampleBuffers(true);
         
         return capabilities;
+    }
+    
+    public Copter3dView getCopter3dView() {
+        return copter3d;
     }
 }

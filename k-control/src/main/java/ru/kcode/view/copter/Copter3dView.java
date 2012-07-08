@@ -14,10 +14,21 @@ public class Copter3dView implements GLEventListener {
     private static final float QC_SHAFT_WIDTH_DELTA = (float) Math.sqrt((QC_SHAFT_WIDTH * QC_SHAFT_WIDTH) / 2f);
     private static final float QC_ROTOR_DELTA = (float) Math.sqrt(
             ( (QC_SHAFT_LENGTH + QC_ROTOR_RADIUS) * (QC_SHAFT_LENGTH + QC_ROTOR_RADIUS) ) / 2f );
+    private static final int angleIncrement = 5;
+    
+    @SuppressWarnings("unused") // used for debug
+    private int angel = 0;
 
     private GLU glu;
     private int w, h;
-    private float angle = 0.0f;
+
+    private int xAngle = 0;
+    private int yAngle = 0;
+    private int zAngle = 0;
+
+    private int xCurentAngle = 0;
+    private int yCurentAngle = 0;
+    private int zCurentAngle = 0;
 
     @Override
     public void init(GLAutoDrawable drawable) {
@@ -36,6 +47,18 @@ public class Copter3dView implements GLEventListener {
 
     }
 
+    public void setXAngle(int angle) {
+        xAngle = angle;
+    }
+
+    public void setYAngle(int angle) {
+        yAngle = angle;
+    }
+
+    public void setZAngle(int angle) {
+        zAngle = angle;
+    }
+    
     @Override
     public void dispose(GLAutoDrawable drawable) {
 
@@ -53,9 +76,11 @@ public class Copter3dView implements GLEventListener {
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
         glu.gluPerspective(45.0f, (float) w / (float) h, 0.1f, 100.0f);
+        gl.glTranslatef(0f, 0f, -6f);
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
+        
         drawScene(drawable);
 
     }
@@ -65,20 +90,36 @@ public class Copter3dView implements GLEventListener {
         
     }
 
-    public void drawScene(GLAutoDrawable drawable) {
+    private void drawScene(GLAutoDrawable drawable) {
         GL2 gl = (GL2) drawable.getGL();
+        if (xCurentAngle > xAngle ) {
+            xCurentAngle -= angleIncrement;
+        }
+        if (xCurentAngle < xAngle ) {
+            xCurentAngle += angleIncrement;
+        }
+        if (yCurentAngle > yAngle ) {
+            yCurentAngle -= angleIncrement;
+        }
+        if (yCurentAngle < yAngle ) {
+            yCurentAngle += angleIncrement;
+        }
+        if (zCurentAngle > zAngle ) {
+            zCurentAngle -= angleIncrement;
+        }
+        if (zCurentAngle < zAngle ) {
+            zCurentAngle += angleIncrement;
+        }
 
-        angle++;
-
-        gl.glTranslatef(0f, 0f, -7f);
-        gl.glRotatef(angle, 1f, 1f, 1f);
-        //gl.glRotatef(0, 0f, 1f, 0f);
-        //gl.glRotatef(0, 0f, 0f, 1f);
+        gl.glRotatef(xCurentAngle, 1f, 0f, 0f);
+        gl.glRotatef(yCurentAngle, 0f, 1f, 0f);
+        gl.glRotatef(zCurentAngle, 0f, 0f, 1f);
+        //gl.glRotatef(angel++, 1f, 1f, 1f);
 
         drawCopter(drawable);
     }
 
-    public void drawCopter(GLAutoDrawable drawable) {
+    private void drawCopter(GLAutoDrawable drawable) {
         drawAxis(drawable);
         
         drawShaft(drawable, -1, -1);

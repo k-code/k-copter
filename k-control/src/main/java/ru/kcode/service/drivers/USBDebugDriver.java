@@ -10,8 +10,10 @@ import java.io.OutputStreamWriter;
 import ru.kcode.service.MotorComputing;
 
 public class USBDebugDriver extends DeviceDriver {
-    private static final String name = "USB Driver (debug)";
-    private static final String deviceName = "/dev/kcopter";
+    private static final String NAME = "USB Driver (debug)";
+    private static final String DEVICE_NAME = "/dev/kcopter";
+    
+    private OutputStreamWriter writer;
 
     @Override
     public void sendData(MotorComputing mc) {
@@ -25,11 +27,11 @@ public class USBDebugDriver extends DeviceDriver {
 
     @Override
     public String getName() {
-        return name;
+        return NAME;
     }
 
     private OutputStreamWriter getWriter() {
-        File device = new File(deviceName);
+        File device = new File(DEVICE_NAME);
         
         if ( !device.exists() ){
             System.out.printf("File %s not exists\n", device);
@@ -54,7 +56,6 @@ public class USBDebugDriver extends DeviceDriver {
     }
     
     public void sendData(char s) {
-        OutputStreamWriter writer = getWriter();
         if (writer == null) {
             return;
         }
@@ -65,6 +66,15 @@ public class USBDebugDriver extends DeviceDriver {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void start() {
+        writer = getWriter();
+    }
+
+    @Override
+    public void stop() {
         try {
             writer.close();
         } catch (IOException e) {

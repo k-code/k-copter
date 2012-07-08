@@ -3,6 +3,7 @@ package ru.kcode.service;
 public class MotorComputing {
     private static final float SENSETIV = 0.2f;
     private static final int LOWER_MOTOR_LIMIT = Math.round(1000 * 0.15f);
+    private static final int MAX_ANGEL = 45;
 
     private static int motorsSpeed = 0;
     
@@ -10,6 +11,10 @@ public class MotorComputing {
     private int motor1 = 0;
     private int motor2 = 0;
     private int motor3 = 0;
+
+    private int xAngle = 0;
+    private int yAngle = 0;
+    private int zAngle = 0;
     
     private MotorComputing() {
     }
@@ -18,6 +23,7 @@ public class MotorComputing {
         MotorComputing result = new MotorComputing();
         changeMotorsSpeed(Math.round(j.getY() * 1000f * SENSETIV));
         result.setMotorsValues(j);
+        result.setAngelsValues(j);
         return result;
     }
 
@@ -43,6 +49,12 @@ public class MotorComputing {
         motor3 = validateMotor(ms + calcMotor3(j));
     }
 
+    private synchronized void setAngelsValues(KJoystick j) {
+        xAngle = getAngel(-j.getZ());
+        yAngle = getAngel(-j.getR());
+        zAngle = getAngel(j.getX());
+    }
+
     public synchronized int getMotor0() {
         return motor0;
     }
@@ -57,6 +69,18 @@ public class MotorComputing {
 
     public synchronized int getMotor3() {
         return motor3;
+    }
+
+    public synchronized int getXAngel() {
+        return xAngle;
+    }
+
+    public synchronized int getYAngel() {
+        return yAngle;
+    }
+
+    public synchronized int getZAngel() {
+        return zAngle;
     }
     
     private int calcMotor0(KJoystick j) {
@@ -94,5 +118,9 @@ public class MotorComputing {
             return getMotorsSpeed() < LOWER_MOTOR_LIMIT ? getMotorsSpeed() : LOWER_MOTOR_LIMIT;
         }
         return i;
+    }
+    
+    private int getAngel(float axisValue) {
+        return Math.round(MAX_ANGEL * axisValue);
     }
 }

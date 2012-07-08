@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import ru.kcode.service.JoystickService;
 import ru.kcode.view.copter.Copetr3dPanel;
 import ru.kcode.view.copter.RotorView;
+import ru.kcode.view.copter.ViewCopter3dJoysticListener;
+import ru.kcode.view.copter.ViewRotorJoysticListener;
 
 import com.centralnexus.input.Joystick;
 
@@ -50,6 +52,7 @@ public class MainWindow extends JFrame implements Runnable {
         if (j != null) {
             j.addJoystickListener(new ViewJoysticListener(joysticPanel));
             j.addJoystickListener(new ViewRotorJoysticListener(rotorView));
+            j.addJoystickListener(new ViewCopter3dJoysticListener(copetr3dPanel.getCopter3dView()));
         }
     }
     
