@@ -38,7 +38,7 @@ public class Copetr3dPanel extends JPanel {
     private void initComponents() {
         jogamp.common.Debug.debugAll();
         canvas = new GLCanvas(createGLCapabilites());
-        canvas.setBounds(10, 10, 400, 400);
+        canvas.setBounds(10, 10, 200, 200);
         add(canvas);
     }
     

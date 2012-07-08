@@ -14,15 +14,11 @@ public class JoysticPanel extends JPanel {
 	private JLabel axisLabelY;
 	private JLabel axisLabelZ;
 	private JLabel axisLabelR;
-	private JLabel axisLabelU;
-	private JLabel axisLabelV;
 
 	private JLabel axisValueX;
 	private JLabel axisValueY;
 	private JLabel axisValueZ;
 	private JLabel axisValueR;
-	private JLabel axisValueU;
-	private JLabel axisValueV;
 	
 	public JoysticPanel() {
 	    layout = new GridBagLayout();
@@ -47,14 +43,6 @@ public class JoysticPanel extends JPanel {
 		return axisValueR;
 	}
 
-	public JLabel getAxisValueU() {
-		return axisValueU;
-	}
-
-	public JLabel getAxisValueV() {
-		return axisValueV;
-	}
-
 	private void initAxisLabels() {
         GridBagConstraints c = new GridBagConstraints();
         c.ipadx = 4;
@@ -62,40 +50,23 @@ public class JoysticPanel extends JPanel {
 		c.gridy = 0;
         axisLabelY = new JLabel("Y:");
 		this.add(axisLabelY, c);
-        c.gridx = 2;
-        c.gridy = 0;
+        c.gridx = 0;
+        c.gridy = 1;
 		axisLabelX = new JLabel("X:");
 		this.add(axisLabelX, c);
-        c.gridx = 4;
+        c.gridx = 2;
         c.gridy = 0;
 		axisLabelZ = new JLabel("Z:");
 		this.add(axisLabelZ, c);
-        c.gridx = 0;
+        c.gridx = 2;
         c.gridy = 1;
 		axisLabelR = new JLabel("R:");
 		this.add(axisLabelR, c);
-        c.gridx = 2;
-        c.gridy = 1;
-		axisLabelU = new JLabel("U:");
-		this.add(axisLabelU, c);
-        c.gridx = 4;
-        c.gridy = 1;
-		axisLabelV = new JLabel("V:");
-		this.add(axisLabelV, c);
 	}
 	
 	private void initAxisValues() {
         GridBagConstraints c = new GridBagConstraints();
-        c.ipadx = 4;
         c.gridx = 1;
-        c.gridy = 0;
-        axisValueU = new JLabel("0");
-        this.add(axisValueU, c);
-        c.gridx = 3;
-        c.gridy = 0;
-        axisValueV = new JLabel("0");
-        this.add(axisValueV, c);
-        c.gridx = 5;
         c.gridy = 0;
         axisValueY = new JLabel("0");
         this.add(axisValueY, c);
@@ -104,10 +75,10 @@ public class JoysticPanel extends JPanel {
 		axisValueX = new JLabel("0");
 		this.add(axisValueX, c);
         c.gridx = 3;
-        c.gridy = 1;
+        c.gridy = 0;
 		axisValueZ = new JLabel("0");
 		this.add(axisValueZ, c);
-        c.gridx = 5;
+        c.gridx = 3;
         c.gridy = 1;
 		axisValueR = new JLabel("0");
 		this.add(axisValueR, c);

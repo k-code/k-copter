@@ -21,8 +21,6 @@ public class ViewJoysticListener implements JoystickListener {
         joysticPanel.getAxisValueY().setText(ftos(kj.getY()));
         joysticPanel.getAxisValueZ().setText(ftos(kj.getZ()));
         joysticPanel.getAxisValueR().setText(ftos(kj.getR()));
-        joysticPanel.getAxisValueU().setText(ftos(kj.getU()));
-        joysticPanel.getAxisValueV().setText(ftos(kj.getV()));
     }
 
     public void joystickButtonChanged(Joystick j) {

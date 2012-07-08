@@ -48,15 +48,15 @@ public class Copter3dView implements GLEventListener {
     }
 
     public void setXAngle(int angle) {
-        xAngle = angle;
+        xAngle = -angle;
     }
 
     public void setYAngle(int angle) {
-        yAngle = angle;
+        yAngle = -angle;
     }
 
     public void setZAngle(int angle) {
-        zAngle = angle;
+        zAngle = -angle;
     }
     
     @Override

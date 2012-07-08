@@ -50,8 +50,8 @@ public class MotorComputing {
     }
 
     private synchronized void setAngelsValues(KJoystick j) {
-        xAngle = getAngel(-j.getZ());
-        yAngle = getAngel(-j.getR());
+        xAngle = getAngel(j.getZ());
+        yAngle = getAngel(j.getR());
         zAngle = getAngel(j.getX());
     }
 
