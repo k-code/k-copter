@@ -1,4 +1,4 @@
-package ru.kcode.view;
+package ru.kcode.view.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -66,6 +66,7 @@ public class JoysticPanel extends JPanel {
 	
 	private void initAxisValues() {
         GridBagConstraints c = new GridBagConstraints();
+        c.ipadx = 4;
         c.gridx = 1;
         c.gridy = 0;
         axisValueY = new JLabel("0");

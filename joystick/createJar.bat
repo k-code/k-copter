@@ -1,2 +1,2 @@
-jar -cvf Joystick.jar com/centralnexus/input/*.class
+jar -cvf Joystick.jar com/centralnexus/input/*
 pause

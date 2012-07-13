@@ -1,6 +1,7 @@
 package ru.kcode.view;
 
 import ru.kcode.service.KJoystick;
+import ru.kcode.view.panels.JoysticPanel;
 
 import com.centralnexus.input.Joystick;
 import com.centralnexus.input.JoystickListener;

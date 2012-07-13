@@ -178,14 +178,7 @@ public class Joystick {
     JoystickNotifier myJoyNotifier;
 
     static {
-        try {
-            new jjstick();
-            joyNotifier = new JoystickNotifier[getNumDevices()];
-        }
-        catch (UnsatisfiedLinkError e) {
-            e.fillInStackTrace();
-            throw e;
-        }
+        init();
     }
 
     /**
@@ -210,6 +203,7 @@ public class Joystick {
     private native static String toString(int id);
 
     Joystick(int id) throws IOException {
+        init();
         if (isPluggedIn(id)) {  // Must be called before anything else!
             this.id = id;
             if (joyNotifier[id] == null)
@@ -496,6 +490,17 @@ public class Joystick {
     /** Text description of this joystick without the axis values */
     public String toString() {
         return toString(id) + " [id=" + id + "]";
+    }
+
+    private static void init() {
+        try {
+            new jjstick();
+            joyNotifier = new JoystickNotifier[getNumDevices()];
+        }
+        catch (UnsatisfiedLinkError e) {
+            e.fillInStackTrace();
+            throw e;
+        }
     }
 }
 

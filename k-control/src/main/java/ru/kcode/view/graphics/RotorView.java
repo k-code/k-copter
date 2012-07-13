@@ -1,4 +1,4 @@
-package ru.kcode.view.copter;
+package ru.kcode.view.graphics;
 
 import java.awt.Canvas;
 import java.awt.Color;

@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 import ru.kcode.view.MainWindow;
 
-public class Controller {
+public class Runner {
 
     public static void main(String[] args) throws Exception {
         MainWindow mainWindow;

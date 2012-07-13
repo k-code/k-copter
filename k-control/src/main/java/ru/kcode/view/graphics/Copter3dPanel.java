@@ -1,15 +1,18 @@
-package ru.kcode.view.copter;
+package ru.kcode.view.graphics;
 
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
-import javax.swing.JPanel;
+
+import ru.kcode.view.GBLHelper;
+import ru.kcode.view.panels.GraphicPanel;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
-public class Copetr3dPanel extends JPanel {
+public class Copter3dPanel extends GraphicPanel {
     private static final long serialVersionUID = 2219431191224761363L;
     private static final int FPS = 80;
     
@@ -17,10 +20,14 @@ public class Copetr3dPanel extends JPanel {
     private GLCanvas canvas;
     private Copter3dView copter3d;
     
-    public Copetr3dPanel() {
-        
-        initComponents();
+    public Copter3dPanel() {
+        super();
+        name = "3D simulyator";
+        setLayout(new GridBagLayout());
 
+        canvas = new GLCanvas(createGLCapabilites());
+        add(canvas, GBLHelper.create().fillB());
+        
         animator = new FPSAnimator(FPS);
         copter3d = new Copter3dView();
 
@@ -28,25 +35,14 @@ public class Copetr3dPanel extends JPanel {
         
         animator.add(canvas);
 
-
-        // This is a workaround for the GLCanvas not adjusting its size, when the frame is resized.
         canvas.setMinimumSize(new Dimension());  
-        animator.start();       
-        
-    }
-    
-    private void initComponents() {
-        jogamp.common.Debug.debugAll();
-        canvas = new GLCanvas(createGLCapabilites());
-        canvas.setBounds(10, 10, 200, 200);
-        add(canvas);
+        animator.start();
     }
     
     private GLCapabilities createGLCapabilites() {
         GLCapabilities capabilities = new GLCapabilities(GLProfile.getGL2GL3());
         capabilities.setHardwareAccelerated(true);
 
-        // try to enable 2x anti aliasing - should be supported on most hardware
         capabilities.setNumSamples(2);
         capabilities.setSampleBuffers(true);
         

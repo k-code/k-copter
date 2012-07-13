@@ -1,4 +1,4 @@
-package ru.kcode.view.copter;
+package ru.kcode.view.graphics;
 
 import ru.kcode.service.KJoystick;
 import ru.kcode.service.MotorComputing;

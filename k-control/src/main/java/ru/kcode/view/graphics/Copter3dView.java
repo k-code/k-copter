@@ -1,4 +1,4 @@
-package ru.kcode.view.copter;
+package ru.kcode.view.graphics;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
