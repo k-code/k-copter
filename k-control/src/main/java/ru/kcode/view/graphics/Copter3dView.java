@@ -111,6 +111,8 @@ public class Copter3dView implements GLEventListener {
             zCurentAngle += angleIncrement;
         }
 
+        //drawAxis(drawable);
+        
         gl.glRotatef(xCurentAngle, 1f, 0f, 0f);
         gl.glRotatef(yCurentAngle, 0f, 1f, 0f);
         gl.glRotatef(zCurentAngle, 0f, 0f, 1f);
@@ -120,8 +122,6 @@ public class Copter3dView implements GLEventListener {
     }
 
     private void drawCopter(GLAutoDrawable drawable) {
-        drawAxis(drawable);
-        
         drawShaft(drawable, -1, -1);
         drawProp(drawable, -1, -1);
         
@@ -135,6 +135,7 @@ public class Copter3dView implements GLEventListener {
         drawProp(drawable, 1, 1);
     }
 
+    @SuppressWarnings("unused")
     private void drawAxis(GLAutoDrawable drawable) {
         GL2 gl = (GL2) drawable.getGL();
         double cx = 0;

@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.centralnexus.input.Joystick;
+
 import ru.kcode.view.panels.ChangeSettingsListener;
 import ru.kcode.view.panels.GraphicPanel;
 import ru.kcode.view.panels.SettingsPanel;
@@ -53,6 +55,11 @@ public final class MainWindow extends JFrame implements Runnable {
                 mainPanel.add(graphicPanel, GBLHelper.create().setGrid(0, 1).fillB().weightV(1));
                 pack();
             }
+        }
+
+        @Override
+        public void changeJoystic(Joystick newJoystick) {
+            graphicPanel.setJoystic(newJoystick);
         }
     }
 }

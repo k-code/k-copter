@@ -2,6 +2,8 @@ package ru.kcode.view.graphics;
 
 import java.awt.GridBagLayout;
 
+import com.centralnexus.input.Joystick;
+
 import ru.kcode.view.GBLHelper;
 import ru.kcode.view.panels.GraphicPanel;
 
@@ -17,5 +19,11 @@ public class Copter2dPanel extends GraphicPanel {
         
         rotorView = new RotorView();
         add(rotorView, GBLHelper.create().fillB());
+    }
+    
+    @Override
+    public void setJoystic(Joystick j) {
+        super.setJoystic(j);
+        joystick.addJoystickListener(new ViewRotorJoysticListener(rotorView));
     }
 }

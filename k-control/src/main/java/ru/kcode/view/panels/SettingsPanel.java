@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import ru.kcode.service.DriverService;
-import ru.kcode.service.JoystickService;
+import ru.kcode.service.RelationsController;
 import ru.kcode.service.drivers.DeviceDriver;
 import ru.kcode.service.drivers.USBDebugDriver;
 import ru.kcode.view.GBLHelper;
@@ -46,7 +46,7 @@ public class SettingsPanel extends JPanel {
         GBLHelper buttonsConst = GBLHelper.create().weightH(0.3).fillH().margin(2, 3);
         
         joysticksBox = new JComboBox();
-        joysticksBox.setMaximumSize(null);
+        joysticksBox.addActionListener(listener);
         add(joysticksBox, comboBoxesConst.setGrid(0, 0));
 
         updateDevicesButton = new JButton("Update");
@@ -63,8 +63,6 @@ public class SettingsPanel extends JPanel {
         
         graphicsModeBox = new JComboBox();
         graphicsModeBox.addActionListener(listener);
-        graphicsModeBox.addItem(new Copter3dPanel());
-        graphicsModeBox.addItem(new Copter2dPanel());
         add(graphicsModeBox, comboBoxesConst.setGrid(0, 2));
         
         applayViewModeButton = new JButton("Applay");
@@ -73,6 +71,7 @@ public class SettingsPanel extends JPanel {
         
         createJoysticksList();
         createDriversList();
+        createGraphicsList();
     }
 
     public void addListener(ChangeSettingsListener listener) {
@@ -85,11 +84,8 @@ public class SettingsPanel extends JPanel {
     
     private void createJoysticksList() {
         joysticksBox.removeAllItems();
-        joysticksBox.addItem("Not found");
+        joysticksBox.addItem("Choise joystick");
         int jCount = Joystick.getNumDevices();
-        if (jCount > 0) {
-            joysticksBox.removeAllItems();
-        }
         for (int i=0; i < jCount; i++) {
             try {
                 joysticksBox.addItem(Joystick.createInstance(i));
@@ -99,7 +95,8 @@ public class SettingsPanel extends JPanel {
             }
         }
         if (joysticksBox.getSelectedItem() instanceof Joystick) {
-            JoystickService.setJoystick((Joystick)joysticksBox.getSelectedItem());
+            RelationsController.setJoystick((Joystick)joysticksBox.getSelectedItem());
+            fireChengeJoysticSettings();
         }
         // TODO : else remove listeners and set null
     }
@@ -109,6 +106,13 @@ public class SettingsPanel extends JPanel {
         driversBox.addItem("Choice driver");
         driversBox.addItem(new USBDebugDriver());
     }
+
+    private void createGraphicsList() {
+        graphicsModeBox.removeAllItems();
+        graphicsModeBox.addItem("Choice view");
+        graphicsModeBox.addItem(new Copter3dPanel());
+        graphicsModeBox.addItem(new Copter2dPanel());
+    }
     
     private class DevicesPanelListener implements ActionListener {
 
@@ -117,6 +121,9 @@ public class SettingsPanel extends JPanel {
             Object source = e.getSource();
             if (source.equals(updateDevicesButton)) {
                 updateDevicesButtonHandler((JButton) e.getSource());
+            }
+            else if (source.equals(joysticksBox)) {
+                fireChengeJoysticSettings();
             }
             else if (source.equals(driversBox)) {
                 changeDriverHandler();
@@ -148,6 +155,15 @@ public class SettingsPanel extends JPanel {
     private void fireChengeGraphicsSettings() {
         for (ChangeSettingsListener l: changeSettingsListeners) {
             l.changeGraphicPanel((GraphicPanel)graphicsModeBox.getSelectedItem());
+        }
+        if (graphicsModeBox.getSelectedItem() instanceof GraphicPanel) {
+            RelationsController.setGraphicPanel((GraphicPanel)graphicsModeBox.getSelectedItem());
+        }
+    }
+    
+    private void fireChengeJoysticSettings() {
+        if (joysticksBox.getSelectedItem() instanceof Joystick) {
+            RelationsController.setJoystick((Joystick)joysticksBox.getSelectedItem());
         }
     }
 }

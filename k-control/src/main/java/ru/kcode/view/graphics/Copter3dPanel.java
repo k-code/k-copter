@@ -10,6 +10,7 @@ import javax.media.opengl.awt.GLCanvas;
 import ru.kcode.view.GBLHelper;
 import ru.kcode.view.panels.GraphicPanel;
 
+import com.centralnexus.input.Joystick;
 import com.jogamp.opengl.util.FPSAnimator;
 
 public class Copter3dPanel extends GraphicPanel {
@@ -51,5 +52,12 @@ public class Copter3dPanel extends GraphicPanel {
     
     public Copter3dView getCopter3dView() {
         return copter3d;
+    }
+    
+    @Override
+    public void setJoystic(Joystick j) {
+        super.setJoystic(j);
+        
+        joystick.addJoystickListener(new ViewCopter3dJoysticListener(copter3d));
     }
 }
