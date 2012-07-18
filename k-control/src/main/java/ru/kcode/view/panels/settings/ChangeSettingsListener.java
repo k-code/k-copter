@@ -1,4 +1,6 @@
-package ru.kcode.view.panels;
+package ru.kcode.view.panels.settings;
+
+import ru.kcode.view.panels.GraphicPanel;
 
 import com.centralnexus.input.Joystick;
 

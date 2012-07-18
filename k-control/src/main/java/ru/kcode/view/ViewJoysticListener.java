@@ -1,16 +1,16 @@
 package ru.kcode.view;
 
 import ru.kcode.service.KJoystick;
-import ru.kcode.view.panels.JoysticPanel;
+import ru.kcode.view.panels.JoysticViewPanel;
 
 import com.centralnexus.input.Joystick;
 import com.centralnexus.input.JoystickListener;
 
 public class ViewJoysticListener implements JoystickListener {
 
-    private JoysticPanel joysticPanel;
+    private JoysticViewPanel joysticPanel;
 
-    public ViewJoysticListener(JoysticPanel joysticPanel) {
+    public ViewJoysticListener(JoysticViewPanel joysticPanel) {
         this.joysticPanel = joysticPanel;
     }
 

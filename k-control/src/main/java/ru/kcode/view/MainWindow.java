@@ -9,13 +9,16 @@ import javax.swing.JPanel;
 
 import com.centralnexus.input.Joystick;
 
-import ru.kcode.view.panels.ChangeSettingsListener;
+import ru.kcode.view.graphics.Copter2dPanel;
+import ru.kcode.view.graphics.Copter3dPanel;
 import ru.kcode.view.panels.GraphicPanel;
-import ru.kcode.view.panels.SettingsPanel;
+import ru.kcode.view.panels.JoysticViewPanel;
+import ru.kcode.view.panels.settings.ChangeSettingsListener;
+import ru.kcode.view.panels.settings.SettingsPanel;
 
 public final class MainWindow extends JFrame implements Runnable {
     private static final long serialVersionUID = 6690894233205194578L;
-    private static final int WIDTH = 500;
+    private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     
     private JPanel mainPanel;
@@ -29,7 +32,9 @@ public final class MainWindow extends JFrame implements Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        Dimension size = new Dimension(WIDTH, HEIGHT);
+        setPreferredSize(size);
+        setMinimumSize(size);
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
@@ -37,7 +42,11 @@ public final class MainWindow extends JFrame implements Runnable {
         
         settingsPanel = new SettingsPanel();;
         settingsPanel.addListener(new ChangeSettingsListenerImpl());
-        mainPanel.add(settingsPanel, GBLHelper.create().setGrid(0, 0).fillH().anchorT());
+        mainPanel.add(settingsPanel, GBLHelper.create().setGrid(0, 0).fillH().anchorT().colSpan().weightV(0.1));
+
+        mainPanel.add(new JoysticViewPanel(), GBLHelper.create().setGrid(0, 1).fillH().anchorT().margin(0, 3));
+        mainPanel.add(new Copter2dPanel(), GBLHelper.create().setGrid(0, 2).fillH().anchorT().weightV(1).margin(20, 3));
+        mainPanel.add(new Copter3dPanel(), GBLHelper.create().setGrid(1, 1).fillB().rowSpan(2).weightV(1).weightH(1));
         
         pack();
     }

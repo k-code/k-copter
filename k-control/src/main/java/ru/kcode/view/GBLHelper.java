@@ -20,11 +20,21 @@ public class GBLHelper extends GridBagConstraints {
         return this;
     }
 
-    public GBLHelper span() {
+    public GBLHelper colSpan() {
         this.gridwidth = GridBagConstraints.REMAINDER;
         return this;
     }
 
+    public GBLHelper colSpan(int col) {
+        this.gridwidth = col;
+        return this;
+    }
+
+    public GBLHelper rowSpan(int row) {
+        this.gridheight = row;
+        return this;
+    }
+    
     public GBLHelper fillH() {
         this.fill = GridBagConstraints.HORIZONTAL;
         if (this.weightx == 0) {
