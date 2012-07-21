@@ -1,36 +1,55 @@
 package ru.kcode.service;
 
-import ru.kcode.view.panels.GraphicPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ru.kcode.view.JoysticViewListener;
+import ru.kcode.view.panels.JoysticViewPanel;
 
 import com.centralnexus.input.Joystick;
 
 public class RelationsController {
-    private static Joystick joystick;
-    private static GraphicPanel graphicPanel;
+    private static Logger log = LoggerFactory.getLogger(RelationsController.class);
+    private static KJoystick joystick;
+    private static JoysticViewPanel joysticView;
+    private static JoysticViewListener jvl;
 
     public static void setJoystick(Joystick j) {
+        log.debug("Set joystic: "+j);
         if (joystick != null) {
-            // TODO : will make method for delete all listeners
-            //joystick.removeJoystickListener(null);
+            joystick.removeAllListeners();
         }
-        joystick = j;
-        if (graphicPanel != null) {
-            graphicPanel.setJoystic(joystick);
+        
+        if (j == null) {
+            joystick = null;
+            return;
         }
+        joystick = new KJoystick(j);
+        addJoystickViewListener();
     }
     
-    public static Joystick getJoystick() {
+    public static KJoystick getJoystick() {
         return joystick;
     }
 
-    public static GraphicPanel getGraphicPanel() {
-        return graphicPanel;
+    public static JoysticViewPanel getJoysticView() {
+        return joysticView;
     }
 
-    public static void setGraphicPanel(GraphicPanel gp) {
-        graphicPanel = gp;
-        if (joystick != null) {
-            gp.setJoystic(joystick);
+    public static void setJoysticView(JoysticViewPanel jv) {
+        log.debug("Set joystick view");
+        joysticView = jv;
+        addJoystickViewListener();
+    }
+    
+    private static void addJoystickViewListener() {
+        log.debug("Add joystick view listener");
+        if (joystick == null || joysticView == null) {
+            return;
         }
+        if (jvl == null) {
+            jvl = new JoysticViewListener(joysticView);
+        }
+        joystick.addListener(jvl);
     }
 }

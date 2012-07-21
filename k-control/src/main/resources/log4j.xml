@@ -11,16 +11,12 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.ownmc">
+	<logger name="ru.kcoode">
 		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	
-	<logger name="org.hibernate">
-		<level value="warn" />
-	</logger>
-
 	<!-- Root Logger -->
 	<root>
 		<priority value="warn" />

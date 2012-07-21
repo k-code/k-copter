@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import com.centralnexus.input.Joystick;
 
+import ru.kcode.service.RelationsController;
 import ru.kcode.view.graphics.Copter2dPanel;
 import ru.kcode.view.graphics.Copter3dPanel;
 import ru.kcode.view.panels.GraphicPanel;
@@ -23,7 +24,7 @@ public final class MainWindow extends JFrame implements Runnable {
     
     private JPanel mainPanel;
     private SettingsPanel settingsPanel;
-    private GraphicPanel graphicPanel;
+    private JoysticViewPanel joysticViewPanel;
 
     @Override
     public void run() {
@@ -44,7 +45,9 @@ public final class MainWindow extends JFrame implements Runnable {
         settingsPanel.addListener(new ChangeSettingsListenerImpl());
         mainPanel.add(settingsPanel, GBLHelper.create().setGrid(0, 0).fillH().anchorT().colSpan().weightV(0.1));
 
-        mainPanel.add(new JoysticViewPanel(), GBLHelper.create().setGrid(0, 1).fillH().anchorT().margin(0, 3));
+        joysticViewPanel = new JoysticViewPanel();
+        RelationsController.setJoysticView(joysticViewPanel);
+        mainPanel.add(joysticViewPanel, GBLHelper.create().setGrid(0, 1).fillH().anchorT().margin(0, 3));
         mainPanel.add(new Copter2dPanel(), GBLHelper.create().setGrid(0, 2).fillH().anchorT().weightV(1).margin(20, 3));
         mainPanel.add(new Copter3dPanel(), GBLHelper.create().setGrid(1, 1).fillB().rowSpan(2).weightV(1).weightH(1));
         
@@ -52,23 +55,10 @@ public final class MainWindow extends JFrame implements Runnable {
     }
 
     private class ChangeSettingsListenerImpl implements ChangeSettingsListener {
-        
-        @Override
-        public void changeGraphicPanel(GraphicPanel newPanel) {
-            if (graphicPanel != null) {
-                mainPanel.remove(graphicPanel);
-            }
-            if (newPanel != null) {
-                graphicPanel = newPanel;
-
-                mainPanel.add(graphicPanel, GBLHelper.create().setGrid(0, 1).fillB().weightV(1));
-                pack();
-            }
-        }
 
         @Override
         public void changeJoystic(Joystick newJoystick) {
-            graphicPanel.setJoystic(newJoystick);
+            RelationsController.setJoystick(newJoystick);
         }
     }
 }
