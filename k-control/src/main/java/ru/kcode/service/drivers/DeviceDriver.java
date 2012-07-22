@@ -1,11 +1,15 @@
 package ru.kcode.service.drivers;
 
-import ru.kcode.service.MotorComputing;
+import ru.kcode.service.Protocol;
 
 public abstract class DeviceDriver {
+    
     public abstract void start();
+    
     public abstract void stop();
-    public abstract void sendData(MotorComputing mc);
+    
+    public abstract void sendData(Protocol p);
+    
     public abstract String getName();
     
     @Override

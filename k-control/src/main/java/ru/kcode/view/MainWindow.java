@@ -12,7 +12,6 @@ import com.centralnexus.input.Joystick;
 import ru.kcode.service.RelationsController;
 import ru.kcode.view.graphics.Copter2dPanel;
 import ru.kcode.view.graphics.Copter3dPanel;
-import ru.kcode.view.panels.GraphicPanel;
 import ru.kcode.view.panels.JoysticViewPanel;
 import ru.kcode.view.panels.settings.ChangeSettingsListener;
 import ru.kcode.view.panels.settings.SettingsPanel;

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import ru.kcode.service.MotorComputing;
+import ru.kcode.service.Protocol;
 
 public class USBDebugDriver extends DeviceDriver {
     private static final String NAME = "USB Driver (debug)";
@@ -16,18 +16,40 @@ public class USBDebugDriver extends DeviceDriver {
     private OutputStreamWriter writer;
 
     @Override
-    public void sendData(MotorComputing mc) {
-        if (mc.getMotor0() > mc.getMotor1()) {
-            sendData('s');
+    public void sendData(Protocol p) {
+        if (writer == null) {
+            return;
         }
-        else {
-            sendData('a');
+        try {
+            byte[] mess = p.getMess();
+            for (int i=0; i < p.getLen(); i++) {
+                writer.write(mess[i]);
+            }
+            writer.flush();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public void start() {
+        writer = getWriter();
+    }
+
+    @Override
+    public void stop() {
+        try {
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private OutputStreamWriter getWriter() {
@@ -53,33 +75,5 @@ public class USBDebugDriver extends DeviceDriver {
         OutputStreamWriter writer = new OutputStreamWriter(stmWriter);
         
         return writer;
-    }
-    
-    public void sendData(char s) {
-        if (writer == null) {
-            return;
-        }
-        try {
-            writer.write(s);
-            writer.flush();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void start() {
-        writer = getWriter();
-    }
-
-    @Override
-    public void stop() {
-        try {
-            writer.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 }
