@@ -23,7 +23,6 @@ public class ProtocolTest {
     @Test
     public void testDriver() {
         Protocol p = new Protocol();
-        p.addParam(Protocol.MESSAGE, "s");
         p.addParam(Protocol.MESSAGE, "a");
         USBDebugDriver dr = new USBDebugDriver();
         dr.start();
