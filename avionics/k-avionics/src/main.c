@@ -31,7 +31,7 @@ __IO uint8_t UserButtonPressed = 0x00;
 uint8_t Buffer[6];
 
 /* Private function prototypes -----------------------------------------------*/
-static void Demo_Exec(void);
+//static void Demo_Exec(void);
 
 /* Private functions ---------------------------------------------------------*/
 

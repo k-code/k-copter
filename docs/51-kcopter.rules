@@ -1,4 +1,5 @@
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", \
+# PID/VID 0x1d50 0x602f
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="602f", \
     MODE:="0666", \
     SYMLINK+="kcopter"
 

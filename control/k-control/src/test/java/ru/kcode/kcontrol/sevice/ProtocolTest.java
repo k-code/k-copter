@@ -1,5 +1,6 @@
 package ru.kcode.kcontrol.sevice;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ru.kcode.service.Protocol;
@@ -7,6 +8,7 @@ import ru.kcode.service.drivers.USBDebugDriver;
 
 public class ProtocolTest {
 
+    @Ignore
     @Test
     public void testCrateProtocol() {
         Protocol p = new Protocol();
@@ -19,11 +21,12 @@ public class ProtocolTest {
         System.out.println(p.toString());
         System.out.println(p.getMess().length);
     }
-    
+
+    @Ignore
     @Test
-    public void testDriver() {
+    public void testDriver() throws Exception {
         Protocol p = new Protocol();
-        p.addParam(Protocol.MESSAGE, "a");
+        p.addParam(Protocol.MESSAGE, "s");
         USBDebugDriver dr = new USBDebugDriver();
         dr.start();
         dr.sendData(p);
