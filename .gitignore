@@ -1,6 +1,6 @@
 .metadata/
-*/target/
+target/
 *.o
 *~
 *.class
-*/Debug/
+Debug/
