@@ -3,6 +3,7 @@ package ru.kcode.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.kcode.service.drivers.DeviceDriver;
 import ru.kcode.view.JoysticViewListener;
 import ru.kcode.view.panels.JoysticViewPanel;
 
@@ -13,7 +14,12 @@ public class RelationsController {
     private static KJoystick joystick;
     private static JoysticViewPanel joysticView;
     private static JoysticViewListener jvl;
+    private static DriverJoystickListener djl;
+    private static DeviceDriver driver;
 
+    private RelationsController() {
+    }
+    
     public static void setJoystick(Joystick j) {
         log.debug("Set joystic: "+j);
         if (joystick != null) {
@@ -26,6 +32,7 @@ public class RelationsController {
         }
         joystick = new KJoystick(j);
         addJoystickViewListener();
+        addDriverJoysticListener();
     }
     
     public static KJoystick getJoystick() {
@@ -42,6 +49,15 @@ public class RelationsController {
         addJoystickViewListener();
     }
     
+    public static void setDriver(DeviceDriver d) {
+        if (driver != null) {
+            driver.stop();
+        }
+        driver = d;
+        driver.start();
+        addDriverJoysticListener();
+    }
+    
     private static void addJoystickViewListener() {
         log.debug("Add joystick view listener");
         if (joystick == null || joysticView == null) {
@@ -51,5 +67,15 @@ public class RelationsController {
             jvl = new JoysticViewListener(joysticView);
         }
         joystick.addListener(jvl);
+    }
+    
+    private static void addDriverJoysticListener() {
+        if (joystick == null || driver == null) {
+            return;
+        }
+        if (djl == null) {
+            djl = new DriverJoystickListener(driver);
+        }
+        joystick.addListener(djl);
     }
 }

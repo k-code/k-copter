@@ -46,6 +46,8 @@
 #define SPI_MOSI_SOURCE               GPIO_PinSource3
 #define SPI_MOSI_AF                   GPIO_AF_SPI2
 
+#define LEDS GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+
 /* Exported macro ------------------------------------------------------------*/
 #define ABS(x)         (x < 0) ? (-x) : x
 #define MAX(a,b)       (a < b) ? (b) : a

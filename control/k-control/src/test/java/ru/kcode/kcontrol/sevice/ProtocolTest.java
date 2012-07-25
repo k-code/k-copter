@@ -22,11 +22,10 @@ public class ProtocolTest {
         System.out.println(p.getMess().length);
     }
 
-    @Ignore
     @Test
     public void testDriver() throws Exception {
         Protocol p = new Protocol();
-        p.addParam(Protocol.MESSAGE, "s");
+        p.addParam(Protocol.MOTOR_1, 5);
         USBDebugDriver dr = new USBDebugDriver();
         dr.start();
         dr.sendData(p);

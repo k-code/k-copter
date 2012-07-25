@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import ru.kcode.service.DriverService;
+import ru.kcode.service.RelationsController;
 import ru.kcode.service.drivers.DeviceDriver;
 import ru.kcode.service.drivers.USBDebugDriver;
 import ru.kcode.view.GBLHelper;
@@ -45,14 +45,10 @@ public class DriversSettingsPanel extends JPanel {
         driversBox.addItem(new USBDebugDriver());
     }
     
-    private void changeDriverHandler() {
-        if (driversBox.getSelectedItem() instanceof DeviceDriver) {
-            DriverService.setDriver((USBDebugDriver) driversBox.getSelectedItem());
-        }
-    }
-    
     private void aplayDriver() {
-        DriverService.getDriver().start();
+        if (driversBox.getSelectedItem() instanceof DeviceDriver) {
+            RelationsController.setDriver((DeviceDriver) driversBox.getSelectedItem());
+        }
     }
 
     private class DriversPanelListener implements ActionListener {
@@ -60,11 +56,7 @@ public class DriversSettingsPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
-            if (source.equals(driversBox)) {
-                changeDriverHandler();
-            }
-
-            else if (source.equals(applayDriverButton)) {
+            if (source.equals(applayDriverButton)) {
                 aplayDriver();
             }
         }

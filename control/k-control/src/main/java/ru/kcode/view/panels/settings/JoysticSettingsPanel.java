@@ -56,8 +56,7 @@ public class JoysticSettingsPanel extends JPanel {
             }
         }
         if (joysticksBox.getSelectedItem() instanceof Joystick) {
-            RelationsController.setJoystick((Joystick) joysticksBox
-                    .getSelectedItem());
+            RelationsController.setJoystick((Joystick) joysticksBox.getSelectedItem());
             fireChengeJoysticSettings();
         }
         // TODO : else remove listeners and set null

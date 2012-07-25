@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import com.centralnexus.input.Joystick;
 
 import ru.kcode.service.RelationsController;
+import ru.kcode.service.drivers.DeviceDriver;
 import ru.kcode.view.graphics.Copter2dPanel;
 import ru.kcode.view.graphics.Copter3dPanel;
 import ru.kcode.view.panels.JoysticViewPanel;
@@ -58,6 +59,11 @@ public final class MainWindow extends JFrame implements Runnable {
         @Override
         public void changeJoystic(Joystick newJoystick) {
             RelationsController.setJoystick(newJoystick);
+        }
+        
+        @Override
+        public void changeDriver(DeviceDriver newDriver) {
+            RelationsController.setDriver(newDriver);
         }
     }
 }

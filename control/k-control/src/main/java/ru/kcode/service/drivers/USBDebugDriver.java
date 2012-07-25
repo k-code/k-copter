@@ -7,11 +7,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ru.kcode.service.Protocol;
 
 public class USBDebugDriver extends DeviceDriver {
     private static final String NAME = "USB Driver (debug)";
     private static final String DEVICE_NAME = "/dev/kcopter";
+    private Logger log = LoggerFactory.getLogger(USBDebugDriver.class);
     
     private OutputStreamWriter writer;
 
@@ -26,6 +30,7 @@ public class USBDebugDriver extends DeviceDriver {
                 writer.write(mess[i]);
             }
             writer.flush();
+            log.debug("Send data: {}", p.toString());
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

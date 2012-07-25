@@ -47,7 +47,6 @@
 /** @defgroup USBD_DESC_Private_Defines
   * @{
   */ 
-// VID/PID 0x1d50 0x602f
 #define USBD_VID                        0x1d50
 
 #define USBD_PID                        0x602f
