@@ -182,6 +182,9 @@ static uint16_t VCP_DataRx (uint8_t* Buf, uint32_t Len)
 	uint32_t i;
 	for (i = 0; i < Len; i++)
 	{
+        TIM_SetCompare1(TIM4, Buf[i]);
+        TIM_SetCompare2(TIM4, Buf[i]);
+        TIM_SetCompare3(TIM4, Buf[i]);
         TIM_SetCompare4(TIM4, Buf[i]);
 	}
 	return USBD_OK;
