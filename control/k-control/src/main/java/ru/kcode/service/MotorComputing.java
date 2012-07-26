@@ -2,7 +2,7 @@ package ru.kcode.service;
 
 public class MotorComputing {
     private static final float SENSETIV = 0.2f;
-    private static final int LOWER_MOTOR_LIMIT = Math.round(1000 * 0f);
+    private static final int LOWER_MOTOR_LIMIT = Math.round(1000 * 0.1f);
     private static final int MAX_ANGEL = 45;
 
     private static int motorsSpeed = 0;

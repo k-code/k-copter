@@ -12,7 +12,7 @@ public class Protocol {
     public static final byte MESSAGE = 0x09;
     
     private static final int MAX_LENGTH = 255;
-    private static final byte TYPE_BYTE = 0x01;
+    private static final byte TYPE_byte = 0x01;
     private static final byte TYPE_INT = 0x02;
     private static final byte TYPE_STR = 0x04;
 
@@ -22,27 +22,27 @@ public class Protocol {
     private byte[] mess = new byte[MAX_LENGTH];
     
     public Protocol() {
-        len++;
-        num++;
+        len+=4;
+        //num++;
         addInt(num);
         addLenToMess();
     }
 
     public void addParam(byte id, byte val) {
-        addByte(id);
-        addByte(TYPE_BYTE);
+        addbyte(id);
+        addbyte(TYPE_byte);
         addInt(val);
     }
 
     public void addParam(byte id, int val) {
-        addByte(id);
-        addByte(TYPE_INT);
+        addbyte(id);
+        addbyte(TYPE_INT);
         addInt(val);
     }
     
     public void addParam(byte id, String val) {
-        addByte(id);
-        addByte(TYPE_STR);
+        addbyte(id);
+        addbyte(TYPE_STR);
         addString(val);
     }
     
@@ -55,7 +55,7 @@ public class Protocol {
         return len;
     }
     
-    private void addByte(byte val) {
+    private void addbyte(byte val) {
         mess[len] = val;
         len++;
     }
@@ -99,7 +99,7 @@ public class Protocol {
         addLenToMess();
         StringBuffer str = new StringBuffer();
         for (int i=0; i < len; i++) {
-            str.append(String.format("%02x ", mess[i]));
+            str.append(String.format("%02x ", (byte)mess[i]));
         }
         return str.toString();
     }

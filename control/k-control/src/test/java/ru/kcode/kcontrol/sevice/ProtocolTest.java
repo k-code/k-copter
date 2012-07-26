@@ -24,10 +24,32 @@ public class ProtocolTest {
 
     @Test
     public void testDriver() throws Exception {
-        Protocol p = new Protocol();
-        p.addParam(Protocol.MOTOR_1, 1000);
         USBDebugDriver dr = new USBDebugDriver();
+        Protocol p = new Protocol();
         dr.start();
+        p.addParam(Protocol.MOTOR_1, 100);
+        dr.sendData(p);
+        p = new Protocol();
+        p.addParam(Protocol.MOTOR_2, 300);
+        dr.sendData(p);
+        p = new Protocol();
+        p.addParam(Protocol.MOTOR_3, 600);
+        dr.sendData(p);
+        p = new Protocol();
+        p.addParam(Protocol.MOTOR_4, 1000);
+        dr.sendData(p);
+        dr.stop();
+    }
+    
+    @Test
+    public void testDriver2() throws Exception {
+        USBDebugDriver dr = new USBDebugDriver();
+        Protocol p = new Protocol();
+        dr.start();
+        p.addParam(Protocol.MOTOR_1, 100);
+        p.addParam(Protocol.MOTOR_2, 200);
+        p.addParam(Protocol.MOTOR_3, 500);
+        p.addParam(Protocol.MOTOR_4, 1000);
         dr.sendData(p);
         dr.stop();
     }

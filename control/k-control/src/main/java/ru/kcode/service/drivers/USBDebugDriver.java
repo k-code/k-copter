@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,7 @@ public class USBDebugDriver extends DeviceDriver {
     private static final String DEVICE_NAME = "/dev/kcopter";
     private Logger log = LoggerFactory.getLogger(USBDebugDriver.class);
     
-    private OutputStreamWriter writer;
+    private FileOutputStream writer;
 
     @Override
     public void sendData(Protocol p) {
@@ -26,9 +24,7 @@ public class USBDebugDriver extends DeviceDriver {
         }
         try {
             byte[] mess = p.getMess();
-            for (int i=0; i < p.getLen(); i++) {
-                writer.write(mess[i]);
-            }
+            writer.write(mess, 0, p.getLen());
             writer.flush();
             log.debug("Send data: {}", p.toString());
         } catch (IOException e) {
@@ -57,7 +53,7 @@ public class USBDebugDriver extends DeviceDriver {
         }
     }
 
-    private OutputStreamWriter getWriter() {
+    private FileOutputStream getWriter() {
         File device = new File(DEVICE_NAME);
         
         if ( !device.exists() ){
@@ -69,7 +65,7 @@ public class USBDebugDriver extends DeviceDriver {
             return null;
         }
         
-        OutputStream stmWriter;
+        FileOutputStream stmWriter;
         try {
             stmWriter = new FileOutputStream(device);
         } catch (FileNotFoundException e) {
@@ -77,8 +73,7 @@ public class USBDebugDriver extends DeviceDriver {
             e.printStackTrace();
             return null;
         }
-        OutputStreamWriter writer = new OutputStreamWriter(stmWriter);
         
-        return writer;
+        return stmWriter;
     }
 }

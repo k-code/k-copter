@@ -28,6 +28,7 @@
 #include "usbd_cdc_core.h"
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_tim.h"
+#include "protocol.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -179,6 +180,17 @@ uint16_t VCP_DataTx (uint8_t* Buf, uint32_t Len)
   */
 static uint16_t VCP_DataRx (uint8_t* Buf, uint32_t Len)
 {
+    //VCP_DataTx(Buf, Len);
+    struct Protocol p = parseProtocol(Buf);
+    for (int32_t i=0; i < p.len; i++) {
+        switch (p.frames[i].cmd) {
+            case MOTOR_1 : TIM_SetCompare1(TIM4, p.frames[i].data); break;
+            case MOTOR_2 : TIM_SetCompare2(TIM4, p.frames[i].data); break;
+            case MOTOR_3 : TIM_SetCompare3(TIM4, p.frames[i].data); break;
+            case MOTOR_4 : TIM_SetCompare4(TIM4, p.frames[i].data); break;
+        }
+    }
+/*
 	uint32_t i;
 	for (i = 0; i < Len; i++)
 	{
@@ -186,7 +198,7 @@ static uint16_t VCP_DataRx (uint8_t* Buf, uint32_t Len)
         TIM_SetCompare2(TIM4, Buf[i]);
         TIM_SetCompare3(TIM4, Buf[i]);
         TIM_SetCompare4(TIM4, Buf[i]);
-	}
+	}*/
 	return USBD_OK;
 }
 
