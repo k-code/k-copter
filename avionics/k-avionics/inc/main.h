@@ -48,6 +48,8 @@
 
 #define LEDS GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 
+#define PWM_PERIOD 2000
+
 /* Exported macro ------------------------------------------------------------*/
 #define ABS(x)         (x < 0) ? (-x) : x
 #define MAX(a,b)       (a < b) ? (b) : a
@@ -55,6 +57,11 @@
 void TimingDelay_Decrement(void);
 void Delay(__IO uint32_t nTime);
 void Fail_Handler(void);
+
+void initLeds(void);
+void initTimer(void);
+void initPWM(void);
+
 #endif /* __STM32F4_DISCOVERY_DEMO_H */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

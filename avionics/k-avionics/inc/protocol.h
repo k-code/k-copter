@@ -1,6 +1,6 @@
 
 #ifndef PROTOCOL
-#define POTOCOL
+#define PROTOCOL
 
 #include "stm32f4xx.h"
 

@@ -168,7 +168,7 @@ void SysTick_Handler(void)
   */
 void EXTI0_IRQHandler(void)
 {
-  static uint8_t test[6] = "HELLO\n";
+  static uint8_t test[6] = "HELLO";
     /* Clear the EXTI line pending bit */
   EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
   

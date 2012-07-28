@@ -116,9 +116,9 @@ public class Copter3dView implements GLEventListener {
         gl.glRotatef(xCurentAngle, 1f, 0f, 0f);
         gl.glRotatef(yCurentAngle, 0f, 1f, 0f);
         gl.glRotatef(zCurentAngle, 0f, 0f, 1f);
-        gl.glRotatef(angel++, 1f, 1f, 1f);
+        //gl.glRotatef(angel++, 1f, 1f, 1f);
 
-        //drawCopter(drawable);
+        drawCopter(drawable);
     }
 
     private void drawCopter(GLAutoDrawable drawable) {

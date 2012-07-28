@@ -11,7 +11,7 @@ public class Protocol {
     public static final byte ANGEL_R = 0x08;
     public static final byte MESSAGE = 0x09;
     
-    private static final int MAX_LENGTH = 255;
+    public static final int MAX_LENGTH = 255;
     private static final byte TYPE_byte = 0x01;
     private static final byte TYPE_INT = 0x02;
     private static final byte TYPE_STR = 0x04;

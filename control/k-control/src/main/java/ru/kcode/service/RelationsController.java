@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import ru.kcode.service.drivers.DeviceDriver;
 import ru.kcode.view.JoysticViewListener;
+import ru.kcode.view.graphics.Copter3dView;
 import ru.kcode.view.panels.JoysticViewPanel;
 
 import com.centralnexus.input.Joystick;
@@ -16,6 +17,7 @@ public class RelationsController {
     private static JoysticViewListener jvl;
     private static DriverJoystickListener djl;
     private static DeviceDriver driver;
+    private static Copter3dView copter3dView;
 
     private RelationsController() {
     }
@@ -77,5 +79,13 @@ public class RelationsController {
             djl = new DriverJoystickListener(driver);
         }
         joystick.addListener(djl);
+    }
+
+    public static Copter3dView getCopter3dView() {
+        return copter3dView;
+    }
+
+    public static void setCopter3dView(Copter3dView copter3dView) {
+        RelationsController.copter3dView = copter3dView;
     }
 }

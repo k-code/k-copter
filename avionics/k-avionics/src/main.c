@@ -1,9 +1,14 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "axis.h"
 #include "usbd_cdc_core.h"
 #include "usbd_usr.h"
 #include "usbd_desc.h"
+#include "usbd_cdc_vcp.h"
+#include "usb_core.h"
+#include "usbd_core.h"
+#include "stm32f4_discovery.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,15 +51,12 @@ int main(void)
   initLeds();
   initTimer();
   initPWM();
+  initSpi();
+  LIS302DL_Init();
   
   /* Initialize LEDs and User_Button on STM32F4-Discovery --------------------*/ 
   STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_EXTI);
   
-  /*STM_EVAL_LEDInit(LED4);
-  STM_EVAL_LEDInit(LED3);
-  STM_EVAL_LEDInit(LED5);
-  STM_EVAL_LEDInit(LED6);
-  */
   /* SysTick end of count event each 1ms */
   RCC_GetClocksFreq(&RCC_Clocks);
   SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000);  
@@ -73,7 +75,20 @@ int main(void)
   
   DemoEnterCondition = 0x01;
 
-  while (1) {}
+  int32_t data[3];
+  uint8_t buf[4];
+  while (1) {
+      LIS302DL_ReadACC(data);
+
+      buf[0] = (uint8_t)abs(PWM_PERIOD+abs(data[0]));
+      buf[1] = (uint8_t)abs(PWM_PERIOD+abs(data[1]));
+      buf[3] = 0;
+      buf[4] = 0;
+
+      VCP_DataTx(buf, 4);
+
+      Delay(300);
+  }
 }
 
 
@@ -132,7 +147,7 @@ void initTimer() {
 
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
     /* Time base configuration */
-    TIM_TimeBaseStructure.TIM_Period = 1000;
+    TIM_TimeBaseStructure.TIM_Period = PWM_PERIOD;
     TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;

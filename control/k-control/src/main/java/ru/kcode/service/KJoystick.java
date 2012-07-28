@@ -48,7 +48,7 @@ public class KJoystick {
     }
     
     public float getR() {
-        return joystick.getZ();
+        return invert(joystick.getZ());
     }
     
     public float getU() {

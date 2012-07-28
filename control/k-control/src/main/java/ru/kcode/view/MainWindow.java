@@ -49,7 +49,9 @@ public final class MainWindow extends JFrame implements Runnable {
         RelationsController.setJoysticView(joysticViewPanel);
         mainPanel.add(joysticViewPanel, GBLHelper.create().setGrid(0, 1).fillH().anchorT().margin(0, 3));
         mainPanel.add(new Copter2dPanel(), GBLHelper.create().setGrid(0, 2).fillH().anchorT().weightV(1).margin(20, 3));
-        mainPanel.add(new Copter3dPanel(), GBLHelper.create().setGrid(1, 1).fillB().rowSpan(2).weightV(1).weightH(1));
+        Copter3dPanel c3p = new Copter3dPanel();
+        mainPanel.add(c3p, GBLHelper.create().setGrid(1, 1).fillB().rowSpan(2).weightV(1).weightH(1));
+        RelationsController.setCopter3dView(c3p.getCopter3dView());
         
         pack();
     }
