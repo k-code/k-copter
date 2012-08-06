@@ -28,6 +28,7 @@
 
 #include "usbd_cdc_core.h"
 #include "usbd_conf.h"
+#include "protocol.h"
 
 
 /* Exported typef ------------------------------------------------------------*/
@@ -48,6 +49,10 @@ typedef struct
 #define OTHER_CONFIG                    1
 
 /* Exported macro ------------------------------------------------------------*/
+
+uint8_t Data_buf[PROTOCOL_MAX_LEN];
+uint8_t Data_get;
+
 /* Exported functions ------------------------------------------------------- */
 void DISCOVERY_COM_IRQHandler(void);
 static uint16_t VCP_Init     (void);

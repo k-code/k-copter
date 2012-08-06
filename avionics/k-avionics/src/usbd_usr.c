@@ -109,8 +109,8 @@ USBD_Usr_cb_TypeDef USR_cb =
 * @retval None
 */
 void USBD_USR_Init(void)
-{   
-
+{
+    TIM_SetCompare2(TIM4, 1000);
 }
 
 /**
@@ -142,6 +142,7 @@ void USBD_USR_DeviceReset(uint8_t speed )
 */
 void USBD_USR_DeviceConfigured (void)
 {
+
 }
 
 
@@ -153,6 +154,7 @@ void USBD_USR_DeviceConfigured (void)
 */
 void USBD_USR_DeviceConnected (void)
 {
+    TIM_SetCompare4(TIM4, 1000);
 }
 
 
@@ -174,6 +176,7 @@ void USBD_USR_DeviceDisconnected (void)
 */
 void USBD_USR_DeviceSuspended(void)
 {
+    TIM_SetCompare3(TIM4, 1000);
   /* Users can do their application actions here for the USB-Reset */
 }
 
@@ -186,6 +189,7 @@ void USBD_USR_DeviceSuspended(void)
 */
 void USBD_USR_DeviceResumed(void)
 {
+    TIM_SetCompare3(TIM4, 0);
   /* Users can do their application actions here for the USB-Reset */
 }
 

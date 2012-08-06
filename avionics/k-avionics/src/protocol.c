@@ -1,48 +1,49 @@
 #include "protocol.h"
+#include "usbd_cdc_vcp.h"
 
-struct PROTOCOL_Protocol PROTOCOL_parseProtocol(uint8_t *buf) {
-    struct PROTOCOL_Protocol p;
-    struct PROTOCOL_Frame f;
-    uint32_t len = PROTOCOL_parseInt(&buf[0]);
-    p.num = PROTOCOL_parseInt(&buf[4]);
-    uint32_t j = 0;
+uint32_t PROTOCOL_parseProtocol(uint8_t *buf, PROTOCOL_Protocol *p) {
+    uint32_t len = 0;
+    return 0;
+    len = PROTOCOL_parseInt(&buf[0]);
+    if (len <= 0 || len > PROTOCOL_MAX_LEN) {
+        p->len = 0;
+        return 0;
+    }
+    p->num = PROTOCOL_parseInt(&buf[4]);
     for (uint32_t i = 8; i < len; ) {
-        f = PROTOCOL_parseFrame(&buf[i]);
+        PROTOCOL_Frame f;
+        PROTOCOL_parseFrame(&buf[i], &f);
         switch (f.type) {
             case PROTOCOL_TYPE_BYTE : i+= 3; break;
             case PROTOCOL_TYPE_INT : i+= 6; break;
-            default: return p;
+            default: return i;
         }
-        p.frames[j] = f;
-        j++;
-        p.len = j;
+        p->frames[p->len] = f;
+        p->len++;
     }
 
-    return p;
+    return 1;
 }
 
-struct PROTOCOL_Frame PROTOCOL_parseFrame(uint8_t *buf) {
-    struct PROTOCOL_Frame f;
-    f.cmd = buf[0];
-    f.type = buf[1];
-    switch (f.type) {
+void PROTOCOL_parseFrame(uint8_t *buf, PROTOCOL_Frame *f) {
+    f->cmd = buf[0];
+    f->type = buf[1];
+    switch (f->type) {
         case PROTOCOL_TYPE_BYTE :
-            f.data = (uint32_t) buf[2];
+            f->data = (uint32_t) buf[2];
             break;
         case PROTOCOL_TYPE_INT :
-            f.data = PROTOCOL_parseInt(&buf[2]);
+            f->data = PROTOCOL_parseInt(&buf[2]);
             break;
     }
-    return f;
+    return;
 }
 
 uint32_t PROTOCOL_parseInt(uint8_t *mess) {
-    uint32_t i = 0;
-
-    uint32_t res = (uint32_t)(mess[i++] << 24);
-    res += (uint32_t)(mess[i++] << 16);
-    res += (uint32_t)(mess[i++] << 8);
-    res += (uint32_t)mess[i];
+    uint32_t res = ((uint32_t)(mess[0])) << 24;
+    res += ((uint32_t)(mess[1])) << 16;
+    res += ((uint32_t)(mess[2])) << 8;
+    res += ((uint32_t)mess[3]);
 
     return res;
 }
@@ -55,7 +56,7 @@ void PROTOCOL_itba(uint32_t val, uint8_t *arr) {
 }
 
 
-uint32_t PROTOCOL_getBytes(struct PROTOCOL_Protocol p, uint32_t framesLen, uint8_t *buf) {
+uint32_t PROTOCOL_getBytes(PROTOCOL_Protocol p, uint32_t framesLen, uint8_t *buf) {
     uint32_t len = 8;
     PROTOCOL_itba(p.num, &buf[4]);
 
