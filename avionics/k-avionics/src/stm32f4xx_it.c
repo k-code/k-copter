@@ -32,7 +32,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-extern uint8_t Buffer[6];
+extern uint8_t Buffer[64];
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 extern __IO uint8_t DemoEnterCondition;
@@ -141,7 +141,6 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-
     TimingDelay_Decrement();
 }
 
@@ -172,7 +171,7 @@ void EXTI0_IRQHandler(void)
     /* Clear the EXTI line pending bit */
   EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
   
-  VCP_DataTx (&test[0],6);
+  //VCP_DataTx (&test[0],6);
 }
 
 /**

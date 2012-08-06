@@ -10,8 +10,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.kcode.service.Protocol;
-import ru.kcode.service.RelationsController;
+import ru.kcode.service.protocol.Protocol;
 
 public class USBDebugDriver extends DeviceDriver implements Runnable {
     private static final String NAME = "USB Driver (debug)";
@@ -46,10 +45,10 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
     @Override
     public void start() {
         writer = getWriter();
-        /*reader = getReader();
+        reader = getReader();
         isRun = true;
         Thread t = new Thread(this);
-        t.start();*/
+        t.start();
     }
 
     @Override
@@ -95,7 +94,7 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
             System.out.printf("File %s not exists\n", device);
             return null;
         }
-        else if ( !device.canWrite() ) {
+        else if ( !device.canRead() ) {
             System.out.printf("Can not wrte to file %s\n", device);
             return null;
         }
@@ -115,18 +114,31 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
     @Override
     public void run() {
         while (isRun) {
-            byte buff[] = new byte[Protocol.MAX_LENGTH];
+            byte buf[] = new byte[Protocol.MAX_LENGTH];
             try {
-                if (reader.available()  <= 0) {
+                int available = reader.available();
+
+                //log.debug("Avaible bytes: {}", available);
+                if (available < 0) {
                     continue;
                 }
-                int len = reader.read(buff, 0, Protocol.MAX_LENGTH);
-                if (len > 2) {
-                    log.debug(ArrayUtils.toString(buff));
-                    RelationsController.getCopter3dView().setXAngle(buff[0]/20);
-                    RelationsController.getCopter3dView().setZAngle(buff[1]/20);
+                int len = reader.read(buf, 0, available);
+                if (len > 0) {
+                    //Protocol p = new Protocol(buff);
+                    String str = new String();
+                    for (int i=0; i < len; i++) {
+                        str = String.format("%s%02x ", str, (byte)buf[i]);
+                    }
+                    log.debug(str);
+                    //log.debug(String.format("X: %d; Y: %d\n", p.getFrames().get(0).getData(), p.getFrames().get(1).getData()));
+                    //RelationsController.getCopter3dView().setXAngle(buff[0]);
+                    //RelationsController.getCopter3dView().setZAngle(buff[1]);
                 }
+                Thread.sleep(100);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

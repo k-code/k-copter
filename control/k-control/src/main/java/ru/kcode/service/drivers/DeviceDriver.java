@@ -1,6 +1,6 @@
 package ru.kcode.service.drivers;
 
-import ru.kcode.service.Protocol;
+import ru.kcode.service.protocol.Protocol;
 
 public abstract class DeviceDriver {
     

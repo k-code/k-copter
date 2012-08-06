@@ -14,7 +14,7 @@ public class Copter3dView implements GLEventListener {
     private static final float QC_SHAFT_WIDTH_DELTA = (float) Math.sqrt((QC_SHAFT_WIDTH * QC_SHAFT_WIDTH) / 2f);
     private static final float QC_ROTOR_DELTA = (float) Math.sqrt(
             ( (QC_SHAFT_LENGTH + QC_ROTOR_RADIUS) * (QC_SHAFT_LENGTH + QC_ROTOR_RADIUS) ) / 2f );
-    private static final int angleIncrement = 5;
+    private static final int angleIncrement = 1;
     
     @SuppressWarnings("unused") // used for debug
     private int angel = 0;

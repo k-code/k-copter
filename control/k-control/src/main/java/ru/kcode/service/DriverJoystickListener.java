@@ -1,6 +1,8 @@
 package ru.kcode.service;
 
 import ru.kcode.service.drivers.DeviceDriver;
+import ru.kcode.service.protocol.Frame;
+import ru.kcode.service.protocol.Protocol;
 
 import com.centralnexus.input.Joystick;
 import com.centralnexus.input.JoystickListener;
@@ -21,10 +23,10 @@ public class DriverJoystickListener implements JoystickListener {
         Protocol p = new Protocol();
         MotorComputing mc = MotorComputing.getInstance(j);
 
-        p.addParam(Protocol.MOTOR_1, mc.getMotor0());
-        p.addParam(Protocol.MOTOR_2, mc.getMotor1());
-        p.addParam(Protocol.MOTOR_3, mc.getMotor2());
-        p.addParam(Protocol.MOTOR_4, mc.getMotor3());
+        p.addParam(Frame.MOTOR_1, mc.getMotor0());
+        p.addParam(Frame.MOTOR_2, mc.getMotor1());
+        p.addParam(Frame.MOTOR_3, mc.getMotor2());
+        p.addParam(Frame.MOTOR_4, mc.getMotor3());
         
         driver.sendData(p);
     }

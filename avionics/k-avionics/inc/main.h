@@ -48,7 +48,7 @@
 
 #define LEDS GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 
-#define PWM_PERIOD 2000
+#define PWM_PERIOD 1000
 
 /* Exported macro ------------------------------------------------------------*/
 #define ABS(x)         (x < 0) ? (-x) : x

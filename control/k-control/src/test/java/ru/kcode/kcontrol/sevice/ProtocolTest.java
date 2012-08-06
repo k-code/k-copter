@@ -3,8 +3,9 @@ package ru.kcode.kcontrol.sevice;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import ru.kcode.service.Protocol;
 import ru.kcode.service.drivers.USBDebugDriver;
+import ru.kcode.service.protocol.Frame;
+import ru.kcode.service.protocol.Protocol;
 
 public class ProtocolTest {
 
@@ -12,12 +13,11 @@ public class ProtocolTest {
     @Test
     public void testCrateProtocol() {
         Protocol p = new Protocol();
-        p.addParam(Protocol.MOTOR_1, 12345);
+        p.addParam(Frame.MOTOR_1, 12345);
         System.out.println(p.toString());
 
         p = new Protocol();
-        p.addParam(Protocol.MOTOR_2, 54321);
-        p.addParam(Protocol.MESSAGE, "1 2 a b");
+        p.addParam(Frame.MOTOR_2, 54321);
         System.out.println(p.toString());
         System.out.println(p.getMess().length);
     }
@@ -27,10 +27,10 @@ public class ProtocolTest {
         USBDebugDriver dr = new USBDebugDriver();
         Protocol p = new Protocol();
         dr.start();
-        p.addParam(Protocol.MOTOR_1, 1000);
-        p.addParam(Protocol.MOTOR_2, 1000);
-        p.addParam(Protocol.MOTOR_3, 1000);
-        p.addParam(Protocol.MOTOR_4, 1000);
+        p.addParam(Frame.MOTOR_1, 1000);
+        p.addParam(Frame.MOTOR_2, 1000);
+        p.addParam(Frame.MOTOR_3, 1000);
+        p.addParam(Frame.MOTOR_4, 1000);
         dr.sendData(p);
         dr.stop();
     }
@@ -40,10 +40,10 @@ public class ProtocolTest {
         USBDebugDriver dr = new USBDebugDriver();
         Protocol p = new Protocol();
         dr.start();
-        p.addParam(Protocol.MOTOR_1, 1000);
-        p.addParam(Protocol.MOTOR_2, 1000);
-        p.addParam(Protocol.MOTOR_3, 1000);
-        p.addParam(Protocol.MOTOR_4, 1000);
+        p.addParam(Frame.MOTOR_1, 1000);
+        p.addParam(Frame.MOTOR_2, 1000);
+        p.addParam(Frame.MOTOR_3, 1000);
+        p.addParam(Frame.MOTOR_4, 1000);
         dr.sendData(p);
         dr.stop();
     }

@@ -181,24 +181,15 @@ uint16_t VCP_DataTx (uint8_t* Buf, uint32_t Len)
 static uint16_t VCP_DataRx (uint8_t* Buf, uint32_t Len)
 {
     //VCP_DataTx(Buf, Len);
-    struct Protocol p = parseProtocol(Buf);
+    struct PROTOCOL_Protocol p = PROTOCOL_parseProtocol(Buf);
     for (int32_t i=0; i < p.len; i++) {
         switch (p.frames[i].cmd) {
-            case MOTOR_1 : TIM_SetCompare1(TIM4, p.frames[i].data); break;
-            case MOTOR_2 : TIM_SetCompare2(TIM4, p.frames[i].data); break;
-            case MOTOR_3 : TIM_SetCompare3(TIM4, p.frames[i].data); break;
-            case MOTOR_4 : TIM_SetCompare4(TIM4, p.frames[i].data); break;
+            case PROTOCOL_MOTOR_1 : TIM_SetCompare1(TIM4, p.frames[i].data); break;
+            case PROTOCOL_MOTOR_2 : TIM_SetCompare2(TIM4, p.frames[i].data); break;
+            case PROTOCOL_MOTOR_3 : TIM_SetCompare3(TIM4, p.frames[i].data); break;
+            case PROTOCOL_MOTOR_4 : TIM_SetCompare4(TIM4, p.frames[i].data); break;
         }
     }
-/*
-	uint32_t i;
-	for (i = 0; i < Len; i++)
-	{
-        TIM_SetCompare1(TIM4, Buf[i]);
-        TIM_SetCompare2(TIM4, Buf[i]);
-        TIM_SetCompare3(TIM4, Buf[i]);
-        TIM_SetCompare4(TIM4, Buf[i]);
-	}*/
 	return USBD_OK;
 }
 

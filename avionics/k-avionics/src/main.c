@@ -1,14 +1,15 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f4_discovery.h"
 #include "axis.h"
-#include "usbd_cdc_core.h"
-#include "usbd_usr.h"
-#include "usbd_desc.h"
-#include "usbd_cdc_vcp.h"
+#include "protocol.h"
 #include "usb_core.h"
 #include "usbd_core.h"
-#include "stm32f4_discovery.h"
+#include "usbd_desc.h"
+#include "usbd_cdc_core.h"
+#include "usbd_cdc_vcp.h"
+#include "usbd_usr.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,7 +34,7 @@ __IO uint32_t TimingDelay;
 __IO uint8_t DemoEnterCondition = 0x00;
 __IO uint8_t UserButtonPressed = 0x00;
 
-uint8_t Buffer[6];
+uint8_t Buffer[64];
 
 /* Private function prototypes -----------------------------------------------*/
 //static void Demo_Exec(void);
@@ -75,19 +76,39 @@ int main(void)
   
   DemoEnterCondition = 0x01;
 
-  int32_t data[3];
-  uint8_t buf[4];
+  //int32_t data[3];
+  uint8_t buf[PROTOCOL_MAX_LEN];
+  //struct PROTOCOL_Protocol p;
+  uint32_t val = PWM_PERIOD;
   while (1) {
-      LIS302DL_ReadACC(data);
+      //LIS302DL_ReadACC(data);
 
-      buf[0] = (uint8_t)abs(PWM_PERIOD+abs(data[0]));
+      val = PWM_PERIOD - val;
+      TIM_SetCompare1(TIM4, val);
+
+      //p.num = 1;
+      /*p.frames[0].cmd = PROTOCOL_ANGEL_X;
+      p.frames[0].type = PROTOCOL_TYPE_INT;
+      p.frames[0].data = abs(data[0]);*/
+
+/*      p.frames[1].cmd = PROTOCOL_ANGEL_X;
+      p.frames[1].type = PROTOCOL_TYPE_INT;
+      p.frames[1].data = abs(data[1]);*/
+
+      //uint32_t len = PROTOCOL_getBytes(p, 0, buf);
+
+      uint32_t len = 10;
+      for (uint8_t i = 0; i < len; i++) {
+          buf[i] = i+'0';
+      }
+
+      /*buf[0] = (uint8_t)abs(PWM_PERIOD+abs(data[0]));
       buf[1] = (uint8_t)abs(PWM_PERIOD+abs(data[1]));
-      buf[3] = 0;
-      buf[4] = 0;
+      buf[2] = 0;*/
 
-      VCP_DataTx(buf, 4);
+      VCP_DataTx(buf, len);
 
-      Delay(300);
+      Delay(1000);
   }
 }
 
