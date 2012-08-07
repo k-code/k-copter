@@ -24,6 +24,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 #include "main.h"
+#include "periph_init.h"
 #include "usb_core.h"
 #include "usbd_core.h"
 #include "stm32f4_discovery.h"
@@ -32,12 +33,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-extern uint8_t Buffer[64];
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern __IO uint8_t DemoEnterCondition;
-uint8_t Counter  = 0x00;
-extern __IO uint8_t UserButtonPressed;
 /* Private function prototypes -----------------------------------------------*/
 extern USB_OTG_CORE_HANDLE           USB_OTG_dev;
 extern uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
@@ -167,11 +164,11 @@ void SysTick_Handler(void)
   */
 void EXTI0_IRQHandler(void)
 {
-  static uint8_t test[6] = "HELLO";
-    /* Clear the EXTI line pending bit */
-  EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
+  uint8_t test[12] = "Hello world\n";
   
-  //VCP_DataTx (&test[0],6);
+  VCP_DataTx (&test[0],12);
+  /* Clear the EXTI line pending bit */
+  EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
 }
 
 /**

@@ -22,8 +22,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usb_bsp.h"
-#include "usbd_conf.h"
-#include "stm32f4_discovery.h"
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
 * @{
@@ -291,7 +289,6 @@ void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
   EXTI_ClearITPendingBit(EXTI_Line20);    
 #endif   
 
-  EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);  
 }
 /**
 * @brief  USB_OTG_BSP_EnableInterrupt
@@ -337,16 +334,12 @@ void USB_OTG_BSP_EnableInterrupt(USB_OTG_CORE_HANDLE *pdev)
 */
 void USB_OTG_BSP_uDelay (const uint32_t usec)
 {
-  uint32_t count = 0;
-  const uint32_t utime = (120 * usec / 7);
+  uint32_t utime = (120 * usec / 7);
   do
   {
-    if ( ++count > utime )
-    {
-      return ;
-    }
+      utime--;
   }
-  while (1);
+  while (utime > 0);
 }
 
 
