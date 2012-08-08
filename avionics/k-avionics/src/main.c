@@ -27,31 +27,13 @@
 #endif /* USB_OTG_HS_INTERNAL_DMA_ENABLED */
 __ALIGN_BEGIN USB_OTG_CORE_HANDLE USB_OTG_dev __ALIGN_END;
 
-
+extern __I uint32_t SysTime;
+extern CDC_IF_Prop_TypeDef  VCP_fops;
 
 /* Private function prototypes -----------------------------------------------*/
-/*void getData(void) {
-    PROTOCOL_Protocol p;
-    PROTOCOL_parseProtocol(Data_buf, &p);
-    for (int32_t i = 0; i < p.len; i++) {
-        switch (p.frames[i].cmd) {
-        case PROTOCOL_MOTOR_1:
-            TIM_SetCompare1(TIM4, p.frames[i].data);
-            break;
-        case PROTOCOL_MOTOR_2:
-            TIM_SetCompare2(TIM4, p.frames[i].data);
-            break;
-        case PROTOCOL_MOTOR_3:
-            TIM_SetCompare3(TIM4, p.frames[i].data);
-            break;
-        case PROTOCOL_MOTOR_4:
-            TIM_SetCompare4(TIM4, p.frames[i].data);
-            break;
-        }
-    }
-}*/
+static void Delay(__IO uint32_t nTime);
+//static void getData(void);
 
-//static void Demo_Exec(void);
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -67,10 +49,10 @@ int main(void) {
     Data_get = 0;
 
     PERIPH_Init_SysTick();
-    initLeds();
-    initTimer();
-    initPWM();
-    initSpi();
+    PERIPH_Init_Leds();
+    PERIPH_Init_Timer();
+    PERIPH_Init_PWM();
+    PERIPH_Init_Spi();
     LIS302DL_Init();
 
     /* USB configuration */
@@ -101,12 +83,12 @@ int main(void) {
         buf[1] = (uint8_t)abs(PWM_PERIOD+ABS(data[1]));
         buf[2] = 0;
 
-        VCP_DataTx(buf, 2);
+        APP_FOPS.pIf_DataTx(buf, 2);
 
         if (Data_get == 1) {
             TIM_SetCompare4(TIM4, 1000);
             //getData();
-            VCP_DataTx(Data_buf, PROTOCOL_MAX_LEN);
+            VCP_fops.pIf_DataTx(Data_buf, PROTOCOL_MAX_LEN);
             Data_get = 0;
         }
         else {
@@ -116,6 +98,40 @@ int main(void) {
         Delay(1000);
     }
 }
+
+/**
+ * @brief  Inserts a delay time.
+ * @param  nTime: specifies the delay time length, in 10 ms.
+ * @retval None
+ */
+static void Delay(__IO uint32_t nTime) {
+    nTime += SysTime;
+
+    while (nTime > SysTime) {
+        __NOP();
+    }
+}
+
+/*static void getData(void) {
+    PROTOCOL_Protocol p;
+    PROTOCOL_parseProtocol(Data_buf, &p);
+    for (int32_t i = 0; i < p.len; i++) {
+        switch (p.frames[i].cmd) {
+        case PROTOCOL_MOTOR_1:
+            TIM_SetCompare1(TIM4, p.frames[i].data);
+            break;
+        case PROTOCOL_MOTOR_2:
+            TIM_SetCompare2(TIM4, p.frames[i].data);
+            break;
+        case PROTOCOL_MOTOR_3:
+            TIM_SetCompare3(TIM4, p.frames[i].data);
+            break;
+        case PROTOCOL_MOTOR_4:
+            TIM_SetCompare4(TIM4, p.frames[i].data);
+            break;
+        }
+    }
+}*/
 
 #ifdef  USE_FULL_ASSERT
 

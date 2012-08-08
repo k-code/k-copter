@@ -23,7 +23,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
-#include "main.h"
 #include "periph_init.h"
 #include "usb_core.h"
 #include "usbd_core.h"
@@ -38,6 +37,7 @@
 /* Private function prototypes -----------------------------------------------*/
 extern USB_OTG_CORE_HANDLE           USB_OTG_dev;
 extern uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
+extern CDC_IF_Prop_TypeDef  VCP_fops;
 
 /******************************************************************************/
 /*            Cortex-M3 Processor Exceptions Handlers                         */
@@ -138,7 +138,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-    TimingDelay_Decrement();
+    SysTime++;
 }
 
 /******************************************************************************/
@@ -166,7 +166,7 @@ void EXTI0_IRQHandler(void)
 {
   uint8_t test[12] = "Hello world\n";
   
-  VCP_DataTx (&test[0],12);
+  APP_FOPS.pIf_DataTx(&test[0],12);
   /* Clear the EXTI line pending bit */
   EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
 }

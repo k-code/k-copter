@@ -2,9 +2,9 @@
 #include "stm32f4xx.h"
 
 uint16_t PrescalerValue = 0;
-__IO uint32_t TimingDelay;
+extern __IO uint32_t SysTime;
 
-void initSpi(void) {
+void PERIPH_Init_Spi(void) {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
@@ -43,7 +43,7 @@ void initSpi(void) {
     SPI_Cmd(SPI1, ENABLE);
 }
 
-void initLeds() {
+void PERIPH_Init_Leds() {
     GPIO_InitTypeDef GPIO_InitStructure;
 
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
@@ -61,7 +61,9 @@ void initLeds() {
     GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF_TIM4);
 }
 
-void initTimer() {
+void PERIPH_Init_Timer() {
+    SysTime = 0;
+
     /* TIM4 clock enable */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 
@@ -78,7 +80,7 @@ void initTimer() {
     TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
 }
 
-void initPWM() {
+void PERIPH_Init_PWM() {
     TIM_OCInitTypeDef TIM_OCInitStructure;
 
     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
@@ -112,26 +114,3 @@ void PERIPH_Init_SysTick(void) {
     SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000);
 }
 
-/**
- * @brief  Inserts a delay time.
- * @param  nTime: specifies the delay time length, in 10 ms.
- * @retval None
- */
-void Delay(__IO uint32_t nTime) {
-    TimingDelay = nTime;
-
-    while (TimingDelay != 0) {
-        __NOP();
-    }
-}
-
-/**
- * @brief  Decrements the TimingDelay variable.
- * @param  None
- * @retval None
- */
-void TimingDelay_Decrement(void) {
-    if (TimingDelay != 0x00) {
-        TimingDelay--;
-    }
-}
