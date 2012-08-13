@@ -28,7 +28,6 @@
 
 #include "usbd_cdc_core.h"
 #include "usbd_conf.h"
-#include "protocol.h"
 
 
 /* Exported typef ------------------------------------------------------------*/
@@ -50,7 +49,7 @@ typedef struct
 
 /* Exported macro ------------------------------------------------------------*/
 
-uint8_t Data_buf[PROTOCOL_MAX_LEN];
+uint8_t Data_buf[APP_RX_DATA_SIZE];
 uint8_t Data_get;
 
 /* Exported functions ------------------------------------------------------- */

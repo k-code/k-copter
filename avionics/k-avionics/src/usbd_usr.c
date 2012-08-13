@@ -120,6 +120,8 @@ void USBD_USR_Init(void)
 */
 void USBD_USR_DeviceReset(uint8_t speed )
 {
+    USBD_USR_DEVICE_CONFIGURED = RESET;
+    TIM_SetCompare3(TIM4, 0);
  switch (speed)
  {
    case USB_OTG_SPEED_HIGH: 
@@ -142,7 +144,8 @@ void USBD_USR_DeviceReset(uint8_t speed )
 */
 void USBD_USR_DeviceConfigured (void)
 {
-
+    USBD_USR_DEVICE_CONFIGURED = SET;
+    TIM_SetCompare3(TIM4, 1000);
 }
 
 
@@ -176,7 +179,6 @@ void USBD_USR_DeviceDisconnected (void)
 */
 void USBD_USR_DeviceSuspended(void)
 {
-    TIM_SetCompare3(TIM4, 1000);
   /* Users can do their application actions here for the USB-Reset */
 }
 
@@ -189,7 +191,6 @@ void USBD_USR_DeviceSuspended(void)
 */
 void USBD_USR_DeviceResumed(void)
 {
-    TIM_SetCompare3(TIM4, 0);
   /* Users can do their application actions here for the USB-Reset */
 }
 

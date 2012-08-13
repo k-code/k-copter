@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,22 +123,24 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
                 }
                 int len = reader.read(buf, 0, available);
                 if (len > 0) {
-                    //Protocol p = new Protocol(buff);
+                    Protocol p = new Protocol(buf);
                     String str = new String();
                     for (int i=0; i < len; i++) {
                         str = String.format("%s%02x ", str, (byte)buf[i]);
                     }
-                    log.debug(str);
-                    //log.debug(String.format("X: %d; Y: %d\n", p.getFrames().get(0).getData(), p.getFrames().get(1).getData()));
+                    log.debug("Recv data: {}", str);
+                    log.debug(String.format("X: %d; Y: %d\n", p.getFrames().get(0).getData(), p.getFrames().get(1).getData()));
                     //RelationsController.getCopter3dView().setXAngle(buff[0]);
                     //RelationsController.getCopter3dView().setZAngle(buff[1]);
                 }
                 Thread.sleep(100);
             } catch (IOException e) {
                 e.printStackTrace();
+                isRun = false;
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                isRun = false;
             }
         }
     }

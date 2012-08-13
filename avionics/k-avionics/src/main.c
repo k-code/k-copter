@@ -3,6 +3,7 @@
 #include "stm32f4_discovery.h"
 #include "lis302dl.h"
 #include "periph_init.h"
+#include "protocol.h"
 #include "usbd_core.h"
 #include "usbd_desc.h"
 #include "usbd_cdc_core.h"
@@ -11,12 +12,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-
-/*
-#define TESTRESULT_ADDRESS         0x080FFFFC
-#define ALLTEST_PASS               0x00000000
-#define ALLTEST_FAIL               0x55555555
-*/
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -31,8 +26,9 @@ extern __I uint32_t SysTime;
 extern CDC_IF_Prop_TypeDef  VCP_fops;
 
 /* Private function prototypes -----------------------------------------------*/
+static void sendData(void);
 static void Delay(__IO uint32_t nTime);
-//static void getData(void);
+static void getData(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -42,11 +38,8 @@ static void Delay(__IO uint32_t nTime);
  * @retval None
  */
 int main(void) {
-    uint8_t buf[PROTOCOL_MAX_LEN];
-    int32_t data[3];
-    //struct PROTOCOL_Protocol p;
-    uint32_t val = PWM_PERIOD;
     Data_get = 0;
+    uint32_t val = PWM_PERIOD;
 
     PERIPH_Init_SysTick();
     PERIPH_Init_Leds();
@@ -59,43 +52,19 @@ int main(void) {
     USBD_Init(&USB_OTG_dev, USB_OTG_FS_CORE_ID, &USR_desc, &USBD_CDC_cb, &USR_cb);
 
     while (1) {
-        LIS302DL_ReadACC(data);
-
         val = PWM_PERIOD - val;
         TIM_SetCompare1(TIM4, val);
 
-        //p.num = 1;
-        /*p.frames[0].cmd = PROTOCOL_ANGEL_X;
-         p.frames[0].type = PROTOCOL_TYPE_INT;
-         p.frames[0].data = abs(data[0]);*/
+        if (USBD_USR_DEVICE_CONFIGURED == SET) {
+            sendData();
 
-        /*      p.frames[1].cmd = PROTOCOL_ANGEL_X;
-         p.frames[1].type = PROTOCOL_TYPE_INT;
-         p.frames[1].data = abs(data[1]);*/
-
-        //uint32_t len = PROTOCOL_getBytes(p, 0, buf);
-        /*uint32_t len = 10;
-        for (uint8_t i = 0; i < len; i++) {
-            buf[i] = i + '0';
-        }*/
-
-        buf[0] = (uint8_t)abs(PWM_PERIOD+ABS(data[0]));
-        buf[1] = (uint8_t)abs(PWM_PERIOD+ABS(data[1]));
-        buf[2] = 0;
-
-        APP_FOPS.pIf_DataTx(buf, 2);
-
-        if (Data_get == 1) {
-            TIM_SetCompare4(TIM4, 1000);
-            //getData();
-            VCP_fops.pIf_DataTx(Data_buf, PROTOCOL_MAX_LEN);
-            Data_get = 0;
-        }
-        else {
-            TIM_SetCompare4(TIM4, 0);
+            if (Data_get == 1) {
+                getData();
+                Data_get = 0;
+            }
         }
 
-        Delay(1000);
+        Delay(200);
     }
 }
 
@@ -112,26 +81,49 @@ static void Delay(__IO uint32_t nTime) {
     }
 }
 
-/*static void getData(void) {
+static void sendData(void) {
+    uint8_t buf[PROTOCOL_MAX_LEN];
+    int32_t data[3];
+    PROTOCOL_Protocol p;
+
+    LIS302DL_ReadACC(data);
+
+
+    p.num = 2;
+    p.frames[0].cmd = PROTOCOL_ANGEL_X;
+    p.frames[0].type = PROTOCOL_TYPE_INT;
+    p.frames[0].iData = data[0];
+
+    p.frames[1].cmd = PROTOCOL_ANGEL_Y;
+    p.frames[1].type = PROTOCOL_TYPE_INT;
+    p.frames[1].iData = data[1];
+    p.framesLen = 2;
+
+    uint32_t len = PROTOCOL_toByteArray(&p, buf);
+
+    APP_FOPS.pIf_DataTx(buf, len);
+}
+
+static void getData(void) {
     PROTOCOL_Protocol p;
     PROTOCOL_parseProtocol(Data_buf, &p);
-    for (int32_t i = 0; i < p.len; i++) {
+    for (int32_t i = 0; i < p.framesLen; i++) {
         switch (p.frames[i].cmd) {
         case PROTOCOL_MOTOR_1:
-            TIM_SetCompare1(TIM4, p.frames[i].data);
+            TIM_SetCompare1(TIM4, p.frames[i].iData);
             break;
         case PROTOCOL_MOTOR_2:
-            TIM_SetCompare2(TIM4, p.frames[i].data);
+            TIM_SetCompare2(TIM4, p.frames[i].iData);
             break;
         case PROTOCOL_MOTOR_3:
-            TIM_SetCompare3(TIM4, p.frames[i].data);
+            TIM_SetCompare3(TIM4, p.frames[i].iData);
             break;
         case PROTOCOL_MOTOR_4:
-            TIM_SetCompare4(TIM4, p.frames[i].data);
+            TIM_SetCompare4(TIM4, p.frames[i].iData);
             break;
         }
     }
-}*/
+}
 
 #ifdef  USE_FULL_ASSERT
 

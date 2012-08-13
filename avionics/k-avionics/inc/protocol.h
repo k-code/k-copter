@@ -1,6 +1,6 @@
 
-#ifndef __PROTOCOL
-#define __PROTOCOL
+#ifndef __PROTOCOL_H
+#define __PROTOCOL_H
 
 #include "stm32f4xx.h"
 
@@ -14,7 +14,7 @@
 #define PROTOCOL_ANGEL_R     (uint8_t) 0x08
 #define PROTOCOL_MESSAGE     (uint8_t) 0x09
 
-#define PROTOCOL_MAX_LEN        32
+#define PROTOCOL_MAX_LEN         32
 #define PROTOCOL_MAX_FRAMES      4
 
 #define PROTOCOL_TYPE_BYTE   (uint8_t) 0x01
@@ -24,19 +24,17 @@
 typedef struct _PROTOCOL_Frame {
     uint8_t cmd;
     uint8_t type;
-    uint32_t data;
+    uint8_t bData;
+    uint32_t iData;
 } PROTOCOL_Frame;
 
 typedef struct _PROTOCOL_Protocol {
-    uint32_t len;
+    uint32_t framesLen;
     uint32_t num;
     PROTOCOL_Frame frames[PROTOCOL_MAX_FRAMES];
 } PROTOCOL_Protocol;
 
-uint32_t PROTOCOL_parseProtocol(uint8_t *buf, PROTOCOL_Protocol *p);
-void PROTOCOL_parseFrame(uint8_t *buf, PROTOCOL_Frame *f);
-uint32_t PROTOCOL_parseInt(uint8_t *mess);
-void PROTOCOL_itba(uint32_t val, uint8_t *arr);
-uint32_t PROTOCOL_getBytes(PROTOCOL_Protocol p, uint32_t framesLen, uint8_t *buf);
+void PROTOCOL_parseProtocol(uint8_t *buf, PROTOCOL_Protocol *p);
+uint32_t PROTOCOL_toByteArray(PROTOCOL_Protocol *p, uint8_t *buf);
 
-#endif //__PROTOCOL
+#endif //__PROTOCOL_H
