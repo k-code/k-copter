@@ -1,4 +1,4 @@
 k-copter
 ========
 
-Programs for the quadrocopter created by me
+Opensource quadrocopter based on STM32F4** microcontroller
