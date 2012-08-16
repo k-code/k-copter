@@ -3,8 +3,10 @@ package ru.kcode.service.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.kcode.service.Utils;
+
 public class Protocol {
-    public static final int MAX_LENGTH = 255;
+    public static final int MAX_LENGTH = 32;
 
     private static int num = 0;
     
@@ -13,14 +15,16 @@ public class Protocol {
     private List<Frame> frames; 
 
     public Protocol() {
+        frames = new ArrayList<Frame>();
         len+=4;
         num++;
         addInt(num);
         addLenToMess();
     }
 
-    public Protocol(byte[] buf) {
-        parseProtocol(buf);
+    public Protocol(byte[] buf, int len) {
+        frames = new ArrayList<Frame>();
+        parseProtocol(buf, len);
     }
 
     public void addParam(byte id, byte val) {
@@ -64,21 +68,8 @@ public class Protocol {
     }
     
     private void addInt(int val) {
-        arrayCopy(mess, itba(val), len, 4);
+        arrayCopy(mess, Utils.itba(val), len, 4);
         len+=4;
-    }
-    
-    /**
-     * Integer to byte array
-     * @param value
-     * @return
-     */
-    private byte[] itba(int value) {
-        return new byte[] {
-                (byte)(value >>> 24),
-                (byte)(value >>> 16),
-                (byte)(value >>> 8),
-                (byte)value};
     }
     
     private void arrayCopy(byte[] to, byte from[], int pos, int len) {
@@ -88,13 +79,12 @@ public class Protocol {
     }
     
     private void addLenToMess() {
-        arrayCopy(mess, itba(len), 0, 4);
+        arrayCopy(mess, Utils.itba(len), 0, 4);
     }
     
-    private void parseProtocol(byte[] buf) {
+    private void parseProtocol(byte[] buf, int len) {
         Frame f;
-        int len = parseInt(buf, 0);
-        for (int i = 8; i < len; ) {
+        for (int i = 4; i < len; ) {
             f = Frame.getFrame(buf, i);
             switch (f.getType()) {
                 case Frame.TYPE_BYTE : i+= 3; break;
@@ -102,7 +92,7 @@ public class Protocol {
                 default: return;
             }
             this.addFrame(f);
-            this.len = i;
+            this.len++;
         }
     }
     
@@ -113,13 +103,5 @@ public class Protocol {
         this.frames.add(f);
     }
 
-    private static int parseInt(byte[] buf, int offset) {
-        int res = (int)(buf[offset++] << 24);
-        res += (int)(buf[offset++] << 16);
-        res += (int)(buf[offset++] << 8);
-        res += (int)(buf[offset]);
-
-        return res;
-    }
 
 }

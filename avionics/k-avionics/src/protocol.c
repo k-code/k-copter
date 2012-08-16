@@ -6,8 +6,8 @@ static uint32_t PROTOCOL_parseInt(uint8_t *mess);
 static void PROTOCOL_intToByteArray(uint32_t val, uint8_t *arr);
 
 uint32_t PROTOCOL_toByteArray(PROTOCOL_Protocol *p, uint8_t *buf) {
-    uint32_t bufLen = 8;
-    PROTOCOL_intToByteArray(p->num, &buf[4]);
+    uint32_t bufLen = 12;
+    PROTOCOL_intToByteArray(p->num, &buf[8]);
 
     for (uint8_t i = 0; i < 2; i++) {
         buf[bufLen] = p->frames[i].cmd;
@@ -23,10 +23,12 @@ uint32_t PROTOCOL_toByteArray(PROTOCOL_Protocol *p, uint8_t *buf) {
         }
     }
 
-    PROTOCOL_intToByteArray(bufLen, &buf[0]);
+    PROTOCOL_intToByteArray(bufLen, &buf[4]);
+    PROTOCOL_intToByteArray(0x55555555, &buf[0]);
     return bufLen;
 }
 
+// TODO : fixed parse protocol. Added check control frame
 void PROTOCOL_parseProtocol(uint8_t *buf, PROTOCOL_Protocol *p) {
     uint32_t bufLen = PROTOCOL_parseInt(&buf[0]);
     p->framesLen = 0;

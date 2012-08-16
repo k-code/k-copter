@@ -48,7 +48,7 @@ public class Copter3dView implements GLEventListener {
     }
 
     public void setXAngle(int angle) {
-        xAngle = -angle;
+        xAngle = angle;
     }
 
     public void setYAngle(int angle) {
@@ -92,7 +92,7 @@ public class Copter3dView implements GLEventListener {
 
     private void drawScene(GLAutoDrawable drawable) {
         GL2 gl = (GL2) drawable.getGL();
-        if (xCurentAngle > xAngle ) {
+        /*if (xCurentAngle > xAngle ) {
             xCurentAngle -= angleIncrement;
         }
         if (xCurentAngle < xAngle ) {
@@ -109,8 +109,12 @@ public class Copter3dView implements GLEventListener {
         }
         if (zCurentAngle < zAngle ) {
             zCurentAngle += angleIncrement;
-        }
+        }*/
 
+        xCurentAngle = xAngle;
+        yCurentAngle = yAngle;
+        zCurentAngle = zAngle;
+        
         //drawAxis(drawable);
         
         gl.glRotatef(xCurentAngle, 1f, 0f, 0f);

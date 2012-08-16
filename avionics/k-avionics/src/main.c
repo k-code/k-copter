@@ -64,7 +64,7 @@ int main(void) {
             }
         }
 
-        Delay(200);
+        Delay(1000);
     }
 }
 
@@ -87,7 +87,6 @@ static void sendData(void) {
     PROTOCOL_Protocol p;
 
     LIS302DL_ReadACC(data);
-
 
     p.num = 2;
     p.frames[0].cmd = PROTOCOL_ANGEL_X;

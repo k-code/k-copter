@@ -9,6 +9,8 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.kcode.service.RelationsController;
+import ru.kcode.service.Utils;
 import ru.kcode.service.protocol.Protocol;
 
 public class USBDebugDriver extends DeviceDriver implements Runnable {
@@ -114,34 +116,68 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
     public void run() {
         while (isRun) {
             byte buf[] = new byte[Protocol.MAX_LENGTH];
+            int len = 0;
             try {
                 int available = reader.available();
 
-                //log.debug("Avaible bytes: {}", available);
-                if (available < 0) {
+                //mast be available control frame, package length, package number and frames
+                if (available > 12) {
+                    //log.debug("Avaible bytes: {}", available);
+                    len = getPackageLength();
+                    if ( len <= 0 ) {
+                        continue;
+                    }
+                }
+                else {
                     continue;
                 }
-                int len = reader.read(buf, 0, available);
-                if (len > 0) {
-                    Protocol p = new Protocol(buf);
+                len = reader.read(buf, 0, len-8);
+                Protocol p = new Protocol(buf, len);
+                
+                if ( p.getLen() > 1 ) {
+                    String format = String.format("%d", p.getFrames().get(0).getData());
+                    //log.debug(format);
+                    System.out.println(format);
+                    RelationsController.getCopter3dView().setXAngle(p.getFrames().get(0).getData() / 10);
+                    RelationsController.getCopter3dView().setZAngle(p.getFrames().get(1).getData() / 10);
+                }
+                else {/*
                     String str = new String();
                     for (int i=0; i < len; i++) {
                         str = String.format("%s%02x ", str, (byte)buf[i]);
                     }
-                    log.debug("Recv data: {}", str);
-                    log.debug(String.format("X: %d; Y: %d\n", p.getFrames().get(0).getData(), p.getFrames().get(1).getData()));
-                    //RelationsController.getCopter3dView().setXAngle(buff[0]);
-                    //RelationsController.getCopter3dView().setZAngle(buff[1]);
+                    log.debug("Recv data: {}", str);*/
+                    System.out.println("bug");
                 }
-                Thread.sleep(100);
-            } catch (IOException e) {
-                e.printStackTrace();
-                isRun = false;
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 isRun = false;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println(len);
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+                isRun = false;
             }
         }
+    }
+    
+    private int getPackageLength() throws IOException {
+        byte controlFrame[] = new byte[4];
+        do {
+            if (reader.available() >= 8) {
+                reader.read(controlFrame, 0, 4);
+                if (Utils.parseInt(controlFrame, 0) == 0x55555555) {
+                    reader.read(controlFrame, 0, 4);
+                    return Utils.parseInt(controlFrame, 0);
+                }
+            }
+            else {
+                return 0;
+            }
+        } while(reader.available() >= 4);
+        return 0;
     }
 }

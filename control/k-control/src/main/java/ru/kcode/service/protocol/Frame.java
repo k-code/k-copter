@@ -1,5 +1,7 @@
 package ru.kcode.service.protocol;
 
+import ru.kcode.service.Utils;
+
 public class Frame {
     public static final byte MOTOR_1 = 0x01;
     public static final byte MOTOR_2 = 0x02;
@@ -20,7 +22,7 @@ public class Frame {
     private int data;
     
     static public Frame getFrame(byte[] buf, int offset) {
-        if (buf.length < 3) {
+        if (buf.length < offset + 3) {
             return null;
         }
         Frame f = new Frame();
@@ -32,7 +34,7 @@ public class Frame {
                 f.data = buf[offset];
                 break;
             case Frame.TYPE_INT:
-                f.data = parseInt(buf, offset);
+                f.data = Utils.parseInt(buf, offset);
                 break;
     
             default:
@@ -63,14 +65,5 @@ public class Frame {
     
     public void setData(int data) {
         this.data = data;
-    }
-    
-    private static int parseInt(byte[] buf, int offset) {
-        int res = (int)(buf[offset++] << 24);
-        res += (int)(buf[offset++] << 16);
-        res += (int)(buf[offset++] << 8);
-        res += (int)(buf[offset]);
-
-        return res;
     }
 }

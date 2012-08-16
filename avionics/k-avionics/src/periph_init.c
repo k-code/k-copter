@@ -111,6 +111,6 @@ void PERIPH_Init_SysTick(void) {
     RCC_ClocksTypeDef RCC_Clocks;
     /* SysTick end of count event each 1ms */
     RCC_GetClocksFreq(&RCC_Clocks);
-    SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000);
+    SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000000);
 }
 
