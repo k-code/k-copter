@@ -23,14 +23,23 @@ void LIS302DL_ReadACC(int32_t *out) {
     }
 }
 
-void LIS302DL_ReadACCY(int32_t* out) {
-    uint8_t buffer[6];
-    LIS302DL_Read(0x2B, buffer, 6);
+void LIS302DL_ReadACCY(int8_t* out) {
+    uint8_t buffer;
+    LIS302DL_Read(0x2B, &buffer, 1);
 
-    for (int i = 0; i < 3; i++) {
-        *out = (int32_t) (72 * (int8_t) buffer[2 * i]);
-        out++;
-    }
+    *out = buffer;
+}
+
+
+void LIS302DL_ReadACCX(int8_t* out) {
+    uint8_t buffer;
+    LIS302DL_Read(0x29, &buffer, 1);
+
+    *out = buffer;
+}
+
+void LIS302DL_getSatus(int8_t *out) {
+    LIS302DL_Read(0x27, out, 1);
 }
 
 static uint8_t LIS302DL_SendByte(uint8_t byte) {

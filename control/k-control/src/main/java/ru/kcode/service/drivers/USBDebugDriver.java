@@ -6,11 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.omg.CORBA.FREE_MEM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ru.kcode.service.RelationsController;
 import ru.kcode.service.Utils;
+import ru.kcode.service.protocol.Frame;
 import ru.kcode.service.protocol.Protocol;
 
 public class USBDebugDriver extends DeviceDriver implements Runnable {
@@ -114,9 +116,12 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
 
     @Override
     public void run() {
+        byte buf[] = new byte[Protocol.MAX_LENGTH];
+        int len = 0;
+        double k = 0.15;
+        int accx = 0;
+        int accz = 0;
         while (isRun) {
-            byte buf[] = new byte[Protocol.MAX_LENGTH];
-            int len = 0;
             try {
                 int available = reader.available();
 
@@ -134,21 +139,22 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
                 len = reader.read(buf, 0, len-8);
                 Protocol p = new Protocol(buf, len);
                 
-                if ( p.getLen() > 1 ) {
-                    String format = String.format("%d", p.getFrames().get(0).getData());
-                    //log.debug(format);
-                    System.out.println(format);
-                    RelationsController.getCopter3dView().setXAngle(p.getFrames().get(0).getData() / 10);
-                    RelationsController.getCopter3dView().setZAngle(p.getFrames().get(1).getData() / 10);
-                }
-                else {/*
-                    String str = new String();
-                    for (int i=0; i < len; i++) {
-                        str = String.format("%s%02x ", str, (byte)buf[i]);
+                for (Frame f : p.getFrames()) {
+                    switch (f.getCmd()) {
+                    case Frame.ANGEL_X:
+                        accx = (int)(f.getData()*k + accx*(1-k));
+                        RelationsController.getCopter3dView().setXAngle(accx);
+                        
+                        break;
+                    case Frame.ANGEL_Y:
+                        accz = (int)(f.getData()*k + accz*(1-k));
+                        RelationsController.getCopter3dView().setZAngle(accz);
+                        break;
+                    default:
+                        break;
                     }
-                    log.debug("Recv data: {}", str);*/
-                    System.out.println("bug");
                 }
+                
                 Thread.sleep(1);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block

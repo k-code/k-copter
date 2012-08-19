@@ -64,7 +64,7 @@ int main(void) {
             }
         }
 
-        Delay(1000);
+        Delay(10000);
     }
 }
 
@@ -83,24 +83,34 @@ static void Delay(__IO uint32_t nTime) {
 
 static void sendData(void) {
     uint8_t buf[PROTOCOL_MAX_LEN];
-    int32_t data[3];
+    int8_t status;
+    int8_t acc;
     PROTOCOL_Protocol p;
 
-    LIS302DL_ReadACC(data);
-
     p.num = 2;
-    p.frames[0].cmd = PROTOCOL_ANGEL_X;
-    p.frames[0].type = PROTOCOL_TYPE_INT;
-    p.frames[0].iData = data[0];
+    p.framesLen = 0;
 
-    p.frames[1].cmd = PROTOCOL_ANGEL_Y;
-    p.frames[1].type = PROTOCOL_TYPE_INT;
-    p.frames[1].iData = data[1];
-    p.framesLen = 2;
+    LIS302DL_getSatus(&status);
 
-    uint32_t len = PROTOCOL_toByteArray(&p, buf);
+    if ( status & 0x01) {
+        LIS302DL_ReadACCX(&acc);
+        p.frames[0].cmd = PROTOCOL_ANGEL_X;
+        p.frames[0].type = PROTOCOL_TYPE_BYTE;
+        p.frames[0].bData = acc;
+        p.framesLen++;
+    }
+    if ( status & 0x02) {
+        LIS302DL_ReadACCY(&acc);
+        p.frames[1].cmd = PROTOCOL_ANGEL_Y;
+        p.frames[1].type = PROTOCOL_TYPE_BYTE;
+        p.frames[1].bData = acc;
+        p.framesLen++;
+    }
 
-    APP_FOPS.pIf_DataTx(buf, len);
+    if (p.framesLen > 0) {
+        uint32_t len = PROTOCOL_toByteArray(&p, buf);
+        APP_FOPS.pIf_DataTx(buf, len);
+    }
 }
 
 static void getData(void) {
