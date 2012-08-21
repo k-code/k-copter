@@ -1,4 +1,5 @@
 Copy all *.rules files from docs/ to /etc/dev/rules.d/
 Copy joystic lib from joystic/libs to /usr/lib/
-Copy all libs ffrom docs/jogamp-all-platforms.7z/jogamp-all-platforms/lib/[your os]/
+Copy all libs from docs/jogamp-all-platforms.7z/jogamp-all-platforms/lib/[your os]/
 
+For installed maven dependencies, run control/k-control/lib/install_maven_dependencies.sh

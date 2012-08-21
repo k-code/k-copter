@@ -61,35 +61,28 @@
 	</build>
 
 	<dependencies>
-		<!-- Local libs -->
+		<!-- For install this is dependencies, run install_maven_dependencies.sh -->
 		<dependency>
 			<groupId>com.centralnexus</groupId>
-			<artifactId>joystick</artifactId>
+			<artifactId>Joystick</artifactId>
 			<version>0.7</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/Joystick.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.jogamp</groupId>
 			<artifactId>jogl</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/jogl.all.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.jogamp</groupId>
 			<artifactId>gluegen</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/gluegen.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.jogamp</groupId>
 			<artifactId>gluegen-rt</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/gluegen-rt.jar</systemPath>
 		</dependency>
+		<!-- End: For install this is dependencies, run install_maven_dependencies.sh -->
 
 		<!-- Logs -->
 		<dependency>
