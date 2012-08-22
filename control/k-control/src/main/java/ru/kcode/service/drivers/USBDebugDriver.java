@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.omg.CORBA.FREE_MEM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,8 +124,8 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
             try {
                 int available = reader.available();
 
-                //mast be available control frame, package length, package number and frames
-                if (available > 12) {
+                //mast be available control frame (4B), package length (4B) and package number (4B)
+                if (available >= 12) {
                     //log.debug("Avaible bytes: {}", available);
                     len = getPackageLength();
                     if ( len <= 0 ) {
@@ -144,7 +143,7 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
                     case Frame.ANGEL_X:
                         accx = (int)(f.getData()*k + accx*(1-k));
                         RelationsController.getCopter3dView().setXAngle(accx);
-                        
+                        //System.out.println(accx);
                         break;
                     case Frame.ANGEL_Y:
                         accz = (int)(f.getData()*k + accz*(1-k));
