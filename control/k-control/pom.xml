@@ -43,7 +43,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>ru.kcode.Runner</mainClass>
+							<mainClass>ru.kcode.kcontrol.Runner</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
