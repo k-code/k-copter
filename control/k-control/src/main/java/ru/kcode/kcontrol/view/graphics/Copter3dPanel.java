@@ -22,10 +22,10 @@ public class Copter3dPanel extends GraphicPanel {
     
     public Copter3dPanel() {
         super();
-        name = "3D simulyator";
+        name = "3D simulator";
         setLayout(new GridBagLayout());
 
-        canvas = new GLCanvas(createGLCapabilites());
+        canvas = new GLCanvas(createGLCapabilities());
         add(canvas, GBLHelper.create().fillB());
         
         animator = new FPSAnimator(FPS);
@@ -39,7 +39,7 @@ public class Copter3dPanel extends GraphicPanel {
         animator.start();
     }
     
-    private GLCapabilities createGLCapabilites() {
+    private GLCapabilities createGLCapabilities() {
         GLCapabilities capabilities = new GLCapabilities(GLProfile.getGL2GL3());
         capabilities.setHardwareAccelerated(true);
 

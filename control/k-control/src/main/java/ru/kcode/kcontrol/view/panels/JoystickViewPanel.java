@@ -9,7 +9,7 @@ import javax.swing.border.EtchedBorder;
 
 import ru.kcode.kcontrol.view.GBLHelper;
 
-public class JoysticViewPanel extends JPanel {
+public class JoystickViewPanel extends JPanel {
 	private static final long serialVersionUID = -3113982496558550127L;
 
 	private JLabel axisLabelX;
@@ -22,7 +22,7 @@ public class JoysticViewPanel extends JPanel {
 	private JLabel axisValueZ;
 	private JLabel axisValueR;
 	
-	public JoysticViewPanel() {
+	public JoystickViewPanel() {
 		setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		initAxisLabels();

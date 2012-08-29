@@ -1,16 +1,16 @@
 package ru.kcode.kcontrol.view;
 
 import ru.kcode.kcontrol.service.KJoystick;
-import ru.kcode.kcontrol.view.panels.JoysticViewPanel;
+import ru.kcode.kcontrol.view.panels.JoystickViewPanel;
 
 import com.centralnexus.input.Joystick;
 import com.centralnexus.input.JoystickListener;
 
-public class JoysticViewListener implements JoystickListener {
+public class JoystickViewListener implements JoystickListener {
 
-    private JoysticViewPanel joysticPanel;
+    private JoystickViewPanel joysticPanel;
 
-    public JoysticViewListener(JoysticViewPanel joysticPanel) {
+    public JoystickViewListener(JoystickViewPanel joysticPanel) {
         this.joysticPanel = joysticPanel;
     }
 

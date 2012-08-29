@@ -24,7 +24,8 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
     private boolean isRun = false;
 
     @Override
-    public void sendData(Protocol p) {
+    public synchronized void sendData(Protocol p) {
+        super.sendData(p);
         if (writer == null) {
             return;
         }
@@ -126,7 +127,7 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
 
                 //mast be available control frame (4B), package length (4B) and package number (4B)
                 if (available >= 12) {
-                    //log.debug("Avaible bytes: {}", available);
+                    //log.debug("Available bytes: {}", available);
                     len = getPackageLength();
                     if ( len <= 0 ) {
                         continue;
@@ -137,13 +138,14 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
                 }
                 len = reader.read(buf, 0, len-8);
                 Protocol p = new Protocol(buf, len);
+                super.receiveData(p);
                 
                 for (Frame f : p.getFrames()) {
                     switch (f.getCmd()) {
                     case Frame.ANGEL_X:
-                        accx = (int)(f.getData()*k + accx*(1-k));
-                        RelationsController.getCopter3dView().setXAngle(accx);
-                        //System.out.println(accx);
+                        accx = (int)(((f.getData()-1)*100)*k + (accx)*(1-k));
+                        RelationsController.getCopter3dView().setXAngle(accx/100);
+                        System.out.println(accx/100);
                         break;
                     case Frame.ANGEL_Y:
                         accz = (int)(f.getData()*k + accz*(1-k));
