@@ -83,7 +83,7 @@ static void Delay(__IO uint32_t nTime) {
 
 static void sendData(void) {
     uint8_t buf[PROTOCOL_MAX_LEN];
-    int8_t status;
+    uint8_t status;
     int8_t acc;
     PROTOCOL_Protocol p;
 

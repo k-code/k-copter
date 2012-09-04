@@ -38,7 +38,7 @@ void LIS302DL_ReadACCX(int8_t* out) {
     *out = buffer;
 }
 
-void LIS302DL_getSatus(int8_t *out) {
+void LIS302DL_getSatus(uint8_t *out) {
     LIS302DL_Read(0x27, out, 1);
 }
 
