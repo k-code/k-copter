@@ -1,11 +1,8 @@
 package ru.kcode.kcontrol.service.drivers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
+import gnu.io.NRSerialPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +13,10 @@ import ru.kcode.kcontrol.service.protocol.Protocol;
 
 public class USBDebugDriver extends DeviceDriver implements Runnable {
     private static final String NAME = "USB Driver (debug)";
-    private static final String DEVICE_NAME = "/dev/kcopter";
     private Logger log = LoggerFactory.getLogger(USBDebugDriver.class);
 
-    private FileOutputStream writer;
-    private FileInputStream reader;
+    private DataOutputStream writer;
+    private DataInputStream reader;
     private boolean isRun = false;
 
     @Override
@@ -47,8 +43,18 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
 
     @Override
     public void start() {
-        writer = getWriter();
-        reader = getReader();
+        NRSerialPort serial = null;
+        for (String port: NRSerialPort.getAvailableSerialPorts()) {
+            serial = new NRSerialPort(port, 19200);
+            break;
+        }
+        if (serial == null) {
+            return;
+        }
+        serial.connect();
+
+        writer = getWriter(serial);
+        reader = getReader(serial);
         isRun = true;
         Thread t = new Thread(this);
         t.start();
@@ -56,6 +62,9 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
 
     @Override
     public void stop() {
+        if (!isRun) {
+            return;
+        }
         try {
             isRun = false;
             writer.close();
@@ -66,51 +75,15 @@ public class USBDebugDriver extends DeviceDriver implements Runnable {
         }
     }
 
-    private FileOutputStream getWriter() {
-        File device = new File(DEVICE_NAME);
-        
-        if ( !device.exists() ){
-            System.out.printf("File %s not exists\n", device);
-            return null;
-        }
-        else if ( !device.canWrite() ) {
-            System.out.printf("Can not wrte to file %s\n", device);
-            return null;
-        }
-        
-        FileOutputStream stmWriter;
-        try {
-            stmWriter = new FileOutputStream(device);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
+    private DataOutputStream getWriter(NRSerialPort serial) {
+        DataOutputStream stmWriter = new DataOutputStream(serial.getOutputStream());
         
         return stmWriter;
     }
     
-    private FileInputStream getReader() {
-        File device = new File(DEVICE_NAME);
-        
-        if ( !device.exists() ){
-            System.out.printf("File %s not exists\n", device);
-            return null;
-        }
-        else if ( !device.canRead() ) {
-            System.out.printf("Can not wrte to file %s\n", device);
-            return null;
-        }
-        
-        FileInputStream stmReader;
-        try {
-            stmReader = new FileInputStream(device);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-        
+    private DataInputStream getReader(NRSerialPort serial) {
+        DataInputStream stmReader = new DataInputStream(serial.getInputStream());
+
         return stmReader;
     }
 
